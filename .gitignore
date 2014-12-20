@@ -1,5 +1,7 @@
 # Compiled python modules.
 *.pyc
+*.bat
+*.xlsx
 
 # Data folder.
 /data/
