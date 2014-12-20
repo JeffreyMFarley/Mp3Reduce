@@ -43,23 +43,31 @@ def extractID3(fullPath):
 
     ufid = ''
     for a0 in track.tag.unique_file_ids:
-        ufid += binascii.b2a_hex(a0.uniq_id).upper()
+        ufid += binascii.b2a_base64(a0.uniq_id)
 
     vbr = False
     bitRate = 0
     if track.info != None:
         vbr, bitRate = track.info.bit_rate
 
-    return {'Track': str(track.tag.track_num[0]), 'Title': track.tag.title, \
-            'Album': track.tag.album, 'Artist': track.tag.artist, 'DJTagger': str.strip(ufid), \
-            'Bit Rate': str(bitRate), 'VBR': str(vbr) }
+    return {'Track': str(track.tag.track_num[0]), 
+            'Title': track.tag.title,
+            'Album': track.tag.album, 
+            'Artist': track.tag.artist, 
+            'DJTagger': str.strip(ufid),
+            'Bit Rate': str(bitRate), 
+            'VBR': str(vbr),
+            'tagSize' : track.tag.header.tag_size}
 
-def calculateHash(fullPath):
+def calculateHash(fullPath, trackInfo):
     chunk_size = 1024
+
+    offset = trackInfo['tagSize'] if 'tagSize' in trackInfo else 0
 
     shaAccum = hashlib.sha1()
     try:
         with open(fullPath, "rb") as f:
+            f.seek(offset)
             byte = f.read(chunk_size)
             while byte:
                 shaAccum.update(byte)
@@ -118,7 +126,7 @@ def scan(f, path):
                     y = extractID3(curFile)
 
                     info = dict(x.items() + y.items())
-                    info['Hash'] = str.strip(calculateHash(curFile))
+                    info['Hash'] = str.strip(calculateHash(curFile, y))
                 
                     writeRow(f, info)
                 except Exception as ex:
@@ -152,6 +160,7 @@ if __name__ == '__main__':
 
         writeHeader(fout)
         scan(fout, path)
+
     except KeyboardInterrupt:
         retval = 0
     except Exception as ex:
