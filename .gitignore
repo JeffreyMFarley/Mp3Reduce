@@ -1,0 +1,6 @@
+# Compiled python modules.
+*.pyc
+
+# Data folder.
+/data/
+/deprecated/
