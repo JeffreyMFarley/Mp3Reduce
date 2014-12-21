@@ -26,6 +26,8 @@ class Library:
 
     @property
     def root(self):
+        if self._root == None:
+            self._root = plistlib.readPlist(self.libraryPath) 
         return self._root
 
     @root.setter
@@ -33,13 +35,13 @@ class Library:
         self._root = value
 
     def trackIterator(self):
-        self.root = plistlib.readPlist(self.libraryPath)
         tracks = self.root['Tracks']
         for track_id in tracks:
             yield self.trackProjection(tracks[track_id])
             
     def playlistIterator(self):
-        for x in l:
+        playlists = self.root['Playlists']
+        for x in playlists:
             name = x['Name']
             tracks = x['Playlist Items'] if 'Playlist Items' in x else []
             for t in tracks:
@@ -68,19 +70,16 @@ class Library:
     def encodeFileLocation(self, f):
         return 'file://localhost' + urlEscaper.quote(f)
     
-# flatten the playlist hierarchy
-# print('Loading the playlists')
-# plist_playlists = library['Playlists']
-# playlists = list(playlistIterator(plist_playlists))
-
 #-------------------------------------------------------------------------------
 # Main
 #-------------------------------------------------------------------------------
 
 def debugging():
     library = Library(r'..\data\yeimi_library.xml')
-    for t in library.trackIterator():
-        print(t)
+    #for t in library.trackIterator():
+    #    print(t)
+    for l in library.playlistIterator():
+        print(l)
     
 if __name__ == '__main__':
     print('this is intended to be used as a helper class and not a free-executing script')

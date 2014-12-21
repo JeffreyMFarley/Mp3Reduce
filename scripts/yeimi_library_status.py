@@ -4,11 +4,14 @@ import sys
 import csv
 import execution_plan as Upstream
 import iTunes
+import functools
+import codecs
+import unicodedata
 
 projectionColumns = ['Track ID', 'Track Number', 'Name', 'Album', 'Artist', 'Location']
 COLUMNS = ['Playlist', 'Track ID', 'Track Number', 'Name', 'Album', 'Artist', 'Location', 'Alias', 'Action']
 
-inputFileName = r'..\data\iTunes Music Library.xml'
+inputFileName = r'..\data\yeimi_library.xml'
 FILENAME = r'..\data\yeimi_library_status.txt'
 
 #-------------------------------------------------------------------------------
@@ -95,26 +98,51 @@ class ProcessLibraryStatus:
         writer.writeheader()
         writer.writerows(sorted(theList, key=self.outputSort))
         fout.close()
-        
+
+#-------------------------------------------------------------------------------
+    def rightJoin(self, onePlaylist, allTracks):
+        fk = onePlaylist['Track ID']
+        track = self.projectionPlaylistTrack(allTracks[fk]) if fk in allTracks else {}
+        return dict(onePlaylist.items() | track.items())
+
+    def projectionPlaylistTrack(self, x):
+        return {
+                'Track Number': x['Track Number'],
+                'Name' : x['Name'] or '',
+                'Album' : x['Album'] or '',
+                'Artist' : x['Artist'] or ''
+            }
+
+    def playlistSort(self, x):
+        return (x['Playlist'] or '', x['Artist'] or '', x['Album'] or '', x['Track Number'] or '', x['Name'] or '')
+
+    def listFilesInPlaylist(self):
+        # load the library
+        print('Loading the library')
+        tracks = {track['Track ID'] : track for track in self.library.trackIterator()}
+
+        # join with the playlists
+        ignore = ['Music', 'Library', 'Podcasts', '_Queue', 'Level A', 'Level B', 'Level C', 'My Top Rated']
+        print('Joining with the Playlists')
+        mapfunc = functools.partial(self.rightJoin, allTracks=tracks)
+        playlistTracks = list(map(mapfunc, filter(lambda y: y['Playlist'] not in ignore, self.library.playlistIterator())))
+
+        with open('..\data\playlists.txt', 'w', encoding='utf-8') as fout:
+            writer = csv.DictWriter(fout, COLUMNS, dialect=csv.excel_tab, extrasaction='ignore')
+            writer.writeheader()
+            writer.writerows(sorted(playlistTracks,key=self.playlistSort))
+
 #-------------------------------------------------------------------------------
 # Main
 #-------------------------------------------------------------------------------
 
 def main():
     pipeline = ProcessLibraryStatus()
-    pipeline.run()
+    #pipeline.run()
+    pipeline.listFilesInPlaylist()
     
 if __name__ == '__main__':
     main()
-    
-    
-##def rightJoin(onePlaylist, allTracks):
-##    fk = str(onePlaylist['Track ID'])
-##    track = projection_libTrack(allTracks[fk]) if fk in allTracks else {}
-##    return dict(onePlaylist.items() | track.items())
 
-# right join the track information
-#mapfunc = functools.partial(rightJoin, allTracks=plist_tracks)
-#playlistTracks = list(map(mapfunc, playlists))
 
 
