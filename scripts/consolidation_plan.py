@@ -15,7 +15,7 @@ KEY = 'fullPath'
 FILENAME = r'..\data\keep_or_delete.txt'
 
 #-------------------------------------------------------------------------------
-# Methods
+# Relational Algebra
 #-------------------------------------------------------------------------------
 
 def groupByKey(x):
@@ -38,6 +38,10 @@ def outputSort(x):
 
 def projection(x):
     return {COLUMNS[i]:unicodedata.normalize('NFC',x[key] or '') for i, key in enumerate(projectionColumns)}
+
+#-------------------------------------------------------------------------------
+# Functional
+#-------------------------------------------------------------------------------
 
 def makeGroups(theList):
     theList.sort(key=groupByKey) # groupby doesn't work with an unsorted list
@@ -74,6 +78,10 @@ def reduce_keep(theGroups):
 
 def reduce_delete(theGroups):
     return [k for g in groups for k in g['files'][1:]]
+
+#-------------------------------------------------------------------------------
+# I/O
+#-------------------------------------------------------------------------------
     
 def load():
     return list(iter_load())
