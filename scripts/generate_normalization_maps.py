@@ -118,7 +118,7 @@ class GenerateNormalizationMaps:
     #-------------------------------------------------------------------------------
     
     def load(self, fileName):
-        return list(self.iter_load(fileName))
+        return {x[KEY]:x['value'] for x in self.iter_load(fileName)}
 
     def iter_load(self, fileName):
          with open(fileName, 'r', encoding='utf-8') as f:
