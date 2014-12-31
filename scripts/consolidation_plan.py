@@ -5,7 +5,7 @@ import csv
 import itertools
 import unicodedata
 import codecs
-import damerau_levenshtein as DL
+import Levenshtein as DL
 import list_mp3s as Upstream
 
 projectionColumns = ['Track','Title','Album','Artist','Full Path','Drive', 'Root', 'Subdir', 'File', 'Hash', 'DJTagger','Bit Rate','VBR']
@@ -70,8 +70,8 @@ def enrich(group):
 
 def score(group):
     for f in group['files']:
-        f['fileDistance'] = 0#DL.distance(f['file'], group['canonicalFileName'])
-        f['pathDistance'] = 0#DL.distance(f['subdir'], group['canonicalSubdir'])
+        f['fileDistance'] = DL.distance(f['file'], group['canonicalFileName'])
+        f['pathDistance'] = DL.distance(f['subdir'], group['canonicalSubdir'])
     
 def reduce_keep(theGroups):
     return [g['files'][0] for g in groups]

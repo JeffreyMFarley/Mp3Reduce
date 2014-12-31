@@ -5,7 +5,7 @@ import csv
 import math
 import keep_or_delete as Upstream
 import iTunes
-import damerau_levenshtein as DL
+import Levenshtein as DL
 
 LIBRARY_COLUMNS = ['Track ID', 'Track Number', 'Name', 'Album', 'Artist', 'Location']
 LIBRARY_FILE = r'..\data\iTunes Music Library.xml'

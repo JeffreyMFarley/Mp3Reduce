@@ -5,7 +5,7 @@ import csv
 import itertools
 import unicodedata
 import codecs
-import damerau_levenshtein as DL
+import Levenshtein as DL
 import list_mp3s as Upstream
 
 projectionColumns = ['Track','Title','Album','Artist','Full Path','Drive', 'Root', 'Subdir', 'File', 'Hash', 'DJTagger','Bit Rate','VBR']
