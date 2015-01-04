@@ -2,7 +2,7 @@ from __future__ import print_function
 import os
 import sys
 import csv
-import list_mp3s as Upstream
+import pyTagger
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 
@@ -15,24 +15,28 @@ class GenerateNormalizationMaps:
     def __init__(self):
         self.artists = set()
         self.albums = set()
+        self.snapshot = pyTagger.Snapshot()
 
-    def generate(self, fileName):
-        tracks = Upstream.load(fileName)
+    def generate(self, fileName, pathSep):
+        tracks = self.snapshot.load(fileName)
+        segmenter = pyTagger.PathSegmentation(pathSep)
 
         # Initialize the two sets with the directory names
-        for track in filter(self.hasRightRoot, tracks):
-            artist, album = track['Subdir'].split('/')
-            self.artists.add(self.normalize(artist))
-            self.albums.add(self.normalize(album))
+        for fullPath, track in tracks.items():
+            pathInfo = segmenter.split(fullPath)
+            if self.hasRightRoot(pathInfo):
+                artist, album = pathInfo['subdir'].split('/')
+                self.artists.add(self.normalize(artist))
+                self.albums.add(self.normalize(album))
 
         #self.dump(self.artists, r'..\data\artist_set.txt')
         #self.dump(self.albums, r'..\data\album_set.txt') 
 
-        artistSet = {x['Artist'] for x in filter(self.hasArtist, tracks) }
+        artistSet = {x['artist'] for x in filter(self.hasArtist, tracks.values()) }
         artistMap = self.enrichAndMap(artistSet, self.artists)
         self.save(FILENAME_ARTIST, artistMap)
 
-        albumSet = {x['Album'] for x in filter(self.hasAlbum, tracks) }
+        albumSet = {x['album'] for x in filter(self.hasAlbum, tracks.values()) }
         albumMap = self.enrichAndMap(albumSet, self.albums)
         self.save(FILENAME_ALBUM, albumMap)
 
@@ -40,13 +44,13 @@ class GenerateNormalizationMaps:
     # Relational Algebra
     #-------------------------------------------------------------------------------
     def hasArtist(self, x):
-        return 'Artist' in x and x['Artist'] != '' and x['Artist'] != None
+        return 'artist' in x and x['artist'] != '' and x['artist'] != None
 
     def hasAlbum(self, x):
-        return 'Album' in x and x['Album'] != '' and x['Album'] != None
+        return 'album' in x and x['album'] != '' and x['album'] != None
 
     def hasRightRoot(self, x):
-        return 'Root' in x and x['Root'] in ['/Volumes/Music/Jeff Music/Music', '/Volumes/Music/Jennifer Music']
+        return 'root' in x and x['root'] in ['/Volumes/Music/Jeff Music/Music', '/Volumes/Music/Jennifer Music', r'\Jeff Music\Music', r'\Jennifer Music']
 
     def outputSort(self, x):
         return x['key'].lower(), x['value'] if 'value' in x else ''
@@ -62,7 +66,7 @@ class GenerateNormalizationMaps:
         sys.stderr.write(' 1  2    5    7  9 |\n')
         sys.stderr.write('-0--5----0----5--0-|\n')
 
-        for x in sorted(a):
+        for x in sorted(a)[:100]:
             j += 1
             if j > update:
                 sys.stderr.write('#')
@@ -87,6 +91,7 @@ class GenerateNormalizationMaps:
 
             result.append(d)
 
+        sys.stderr.write('\n')
         return result
 
     #-------------------------------------------------------------------------------
@@ -144,10 +149,10 @@ class GenerateNormalizationMaps:
 #-------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    fileName = r'..\data\kira_mp3s.txt'
+    fileName = r'..\data\mp3s.json'
     argc = len(sys.argv)
     if argc > 1:
         fileName = sys.argv[1]
 
     pipeline = GenerateNormalizationMaps()
-    pipeline.generate(fileName)
+    pipeline.generate(fileName, '/')
