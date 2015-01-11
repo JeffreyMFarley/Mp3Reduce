@@ -6,7 +6,6 @@ import binascii
 import hashlib
 import generate_normalization_maps as Maps
 from generate_normalization_maps import *
-import pyTagger
 
 class AddNameHash:
     def __init__(self):
@@ -18,15 +17,13 @@ class AddNameHash:
         self.albums = maps.load(Maps.FILENAME_ALBUM)
         self.artists = maps.load(Maps.FILENAME_ARTIST)
 
-        snapshot = pyTagger.Snapshot()
-
         # Load the scanned list of tracks & enrich
-        self.tracks = snapshot.load(inFile)
+        self.tracks = maps.snapshot.load(inFile)
         for k,v in self.tracks.items():
             self.tracks[k] = self.enrich(v)
 
         # Save
-        snapshot.save(outFile, self.tracks)
+        maps.snapshot.save(outFile, self.tracks)
 
     #-------------------------------------------------------------------------------
     # Name hashing

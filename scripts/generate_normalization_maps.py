@@ -15,7 +15,7 @@ class GenerateNormalizationMaps:
     def __init__(self):
         self.artists = set()
         self.albums = set()
-        self.snapshot = pyTagger.Snapshot()
+        self.snapshot = pyTagger.Mp3Snapshot()
 
     def generate(self, fileName, pathSep):
         tracks = self.snapshot.load(fileName)
