@@ -2,7 +2,8 @@ from __future__ import print_function
 import os
 import sys
 import csv
-import pyTagger
+from pyTagger.mp3_snapshot import Mp3Snapshot
+from pyTagger.path_segmentation import PathSegmentation
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 
@@ -15,11 +16,11 @@ class GenerateNormalizationMaps:
     def __init__(self):
         self.artists = set()
         self.albums = set()
-        self.snapshot = pyTagger.Mp3Snapshot()
+        self.snapshot = Mp3Snapshot()
 
     def generate(self, fileName, pathSep):
         tracks = self.snapshot.load(fileName)
-        segmenter = pyTagger.PathSegmentation(pathSep)
+        segmenter = PathSegmentation(pathSep)
 
         # Initialize the two sets with the directory names
         for fullPath, track in tracks.items():
@@ -66,7 +67,7 @@ class GenerateNormalizationMaps:
         sys.stderr.write(' 1  2    5    7  9 |\n')
         sys.stderr.write('-0--5----0----5--0-|\n')
 
-        for x in sorted(a)[:100]:
+        for x in sorted(a):
             j += 1
             if j > update:
                 sys.stderr.write('#')
