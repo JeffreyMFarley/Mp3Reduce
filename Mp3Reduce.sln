@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Phase II", "Phase II.pyproj", "{27C6B975-C30D-431D-A3BB-33726714A13D}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Phase I", "Phase I.pyproj", "{9159AEBA-60B0-483B-BE00-089A4374290E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27C6B975-C30D-431D-A3BB-33726714A13D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C6B975-C30D-431D-A3BB-33726714A13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C6B975-C30D-431D-A3BB-33726714A13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C6B975-C30D-431D-A3BB-33726714A13D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9159AEBA-60B0-483B-BE00-089A4374290E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9159AEBA-60B0-483B-BE00-089A4374290E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9159AEBA-60B0-483B-BE00-089A4374290E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9159AEBA-60B0-483B-BE00-089A4374290E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

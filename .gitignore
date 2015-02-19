@@ -3,6 +3,9 @@
 *.bat
 *.xlsx
 
+# Visual Studio
+*.suo
+
 # Data folder.
 /data/
 /sandbox/
