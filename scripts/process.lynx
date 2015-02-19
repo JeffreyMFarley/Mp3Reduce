@@ -1,0 +1,190 @@
+<?xml version="1.0" standalone="yes"?>
+<Lynx>
+  <xs:schema id="Lynx" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+    <xs:element name="Lynx" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Scripts" msprop:TableType="EntitySet">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="ID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" />
+                <xs:element name="Name" type="xs:string" minOccurs="0" />
+                <xs:element name="Description" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Process" msprop:TargetSet="Scripts" msprop:TableType="LinkSet" msprop:SourceSet="Scripts">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Source" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="Destination" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="Name" type="xs:string" minOccurs="0" />
+                <xs:element name="Description" type="xs:string" minOccurs="0" />
+                <xs:element name="SourceName" msdata:ReadOnly="true" msdata:Expression="Parent(Process_Source).Name" type="xs:string" minOccurs="0" />
+                <xs:element name="DestinationName" msdata:ReadOnly="true" msdata:Expression="Parent(Process_Target).Name" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+      <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+        <xs:selector xpath=".//Scripts" />
+        <xs:field xpath="ID" />
+      </xs:unique>
+      <xs:keyref name="Process_Target" refer="Constraint1">
+        <xs:selector xpath=".//Process" />
+        <xs:field xpath="Destination" />
+      </xs:keyref>
+      <xs:keyref name="Process_Source" refer="Constraint1">
+        <xs:selector xpath=".//Process" />
+        <xs:field xpath="Source" />
+      </xs:keyref>
+    </xs:element>
+  </xs:schema>
+  <Scripts>
+    <ID>c1a2ee6c-cae7-48b7-8923-448733be7fa1</ID>
+    <Name>add_name_hash</Name>
+  </Scripts>
+  <Scripts>
+    <ID>6cc282cc-e4c0-48db-827c-6bcd5c8792ab</ID>
+    <Name>consolidation_plan</Name>
+  </Scripts>
+  <Scripts>
+    <ID>303fc2bb-d2fd-4e43-819c-1ebd89a59193</ID>
+    <Name>curated_updates</Name>
+  </Scripts>
+  <Scripts>
+    <ID>8d233687-525a-4ee8-8fad-c594d3b14f0d</ID>
+    <Name>execution_plan</Name>
+  </Scripts>
+  <Scripts>
+    <ID>e2256027-ab39-46ee-a75e-edef404ccf97</ID>
+    <Name>generate_bash_script</Name>
+  </Scripts>
+  <Scripts>
+    <ID>2cd6eb91-fc34-4b54-90f2-8ec52e4d038a</ID>
+    <Name>generate_normalization_maps</Name>
+  </Scripts>
+  <Scripts>
+    <ID>6ff87221-3575-4107-8a9f-89a93cc6fa69</ID>
+    <Name>keep_or_delete</Name>
+  </Scripts>
+  <Scripts>
+    <ID>ed1e5d0a-4f40-404f-a8d6-bb892b4eabe1</ID>
+    <Name>list_missing_tags</Name>
+  </Scripts>
+  <Scripts>
+    <ID>e11451a1-f26b-4b40-ba7f-742877a1e4a3</ID>
+    <Name>list_mp3s</Name>
+  </Scripts>
+  <Scripts>
+    <ID>6d182e67-c3d8-4e90-9131-a8aaf5be1131</ID>
+    <Name>qc</Name>
+  </Scripts>
+  <Scripts>
+    <ID>83227d94-86d3-443e-964a-fbcfeeca752e</ID>
+    <Name>update_library</Name>
+  </Scripts>
+  <Scripts>
+    <ID>98efa2e5-51de-4fbd-80f1-29a2295e5332</ID>
+    <Name>yeimi_library_status</Name>
+  </Scripts>
+  <Scripts>
+    <ID>de86a700-8fef-49d8-b694-6ac46da13a61</ID>
+    <Name>pyTagger.mp3_snapshot</Name>
+  </Scripts>
+  <Scripts>
+    <ID>43de24b6-7c14-46c7-a3f5-366d34b35f19</ID>
+    <Name>pyTagger.iTunes</Name>
+  </Scripts>
+  <Process>
+    <Source>2cd6eb91-fc34-4b54-90f2-8ec52e4d038a</Source>
+    <Destination>c1a2ee6c-cae7-48b7-8923-448733be7fa1</Destination>
+    <SourceName>generate_normalization_maps</SourceName>
+    <DestinationName>add_name_hash</DestinationName>
+  </Process>
+  <Process>
+    <Source>de86a700-8fef-49d8-b694-6ac46da13a61</Source>
+    <Destination>2cd6eb91-fc34-4b54-90f2-8ec52e4d038a</Destination>
+    <SourceName>pyTagger.mp3_snapshot</SourceName>
+    <DestinationName>generate_normalization_maps</DestinationName>
+  </Process>
+  <Process>
+    <Source>e11451a1-f26b-4b40-ba7f-742877a1e4a3</Source>
+    <Destination>6cc282cc-e4c0-48db-827c-6bcd5c8792ab</Destination>
+    <SourceName>list_mp3s</SourceName>
+    <DestinationName>consolidation_plan</DestinationName>
+  </Process>
+  <Process>
+    <Source>6ff87221-3575-4107-8a9f-89a93cc6fa69</Source>
+    <Destination>303fc2bb-d2fd-4e43-819c-1ebd89a59193</Destination>
+    <SourceName>keep_or_delete</SourceName>
+    <DestinationName>curated_updates</DestinationName>
+  </Process>
+  <Process>
+    <Source>6ff87221-3575-4107-8a9f-89a93cc6fa69</Source>
+    <Destination>8d233687-525a-4ee8-8fad-c594d3b14f0d</Destination>
+    <SourceName>keep_or_delete</SourceName>
+    <DestinationName>execution_plan</DestinationName>
+  </Process>
+  <Process>
+    <Source>43de24b6-7c14-46c7-a3f5-366d34b35f19</Source>
+    <Destination>8d233687-525a-4ee8-8fad-c594d3b14f0d</Destination>
+    <SourceName>pyTagger.iTunes</SourceName>
+    <DestinationName>execution_plan</DestinationName>
+  </Process>
+  <Process>
+    <Source>8d233687-525a-4ee8-8fad-c594d3b14f0d</Source>
+    <Destination>e2256027-ab39-46ee-a75e-edef404ccf97</Destination>
+    <SourceName>execution_plan</SourceName>
+    <DestinationName>generate_bash_script</DestinationName>
+  </Process>
+  <Process>
+    <Source>e11451a1-f26b-4b40-ba7f-742877a1e4a3</Source>
+    <Destination>6ff87221-3575-4107-8a9f-89a93cc6fa69</Destination>
+    <SourceName>list_mp3s</SourceName>
+    <DestinationName>keep_or_delete</DestinationName>
+  </Process>
+  <Process>
+    <Source>de86a700-8fef-49d8-b694-6ac46da13a61</Source>
+    <Destination>ed1e5d0a-4f40-404f-a8d6-bb892b4eabe1</Destination>
+    <SourceName>pyTagger.mp3_snapshot</SourceName>
+    <DestinationName>list_missing_tags</DestinationName>
+  </Process>
+  <Process>
+    <Source>6ff87221-3575-4107-8a9f-89a93cc6fa69</Source>
+    <Destination>6d182e67-c3d8-4e90-9131-a8aaf5be1131</Destination>
+    <SourceName>keep_or_delete</SourceName>
+    <DestinationName>qc</DestinationName>
+  </Process>
+  <Process>
+    <Source>6d182e67-c3d8-4e90-9131-a8aaf5be1131</Source>
+    <Destination>303fc2bb-d2fd-4e43-819c-1ebd89a59193</Destination>
+    <SourceName>qc</SourceName>
+    <DestinationName>curated_updates</DestinationName>
+  </Process>
+  <Process>
+    <Source>8d233687-525a-4ee8-8fad-c594d3b14f0d</Source>
+    <Destination>83227d94-86d3-443e-964a-fbcfeeca752e</Destination>
+    <SourceName>execution_plan</SourceName>
+    <DestinationName>update_library</DestinationName>
+  </Process>
+  <Process>
+    <Source>43de24b6-7c14-46c7-a3f5-366d34b35f19</Source>
+    <Destination>83227d94-86d3-443e-964a-fbcfeeca752e</Destination>
+    <SourceName>pyTagger.iTunes</SourceName>
+    <DestinationName>update_library</DestinationName>
+  </Process>
+  <Process>
+    <Source>8d233687-525a-4ee8-8fad-c594d3b14f0d</Source>
+    <Destination>98efa2e5-51de-4fbd-80f1-29a2295e5332</Destination>
+    <SourceName>execution_plan</SourceName>
+    <DestinationName>yeimi_library_status</DestinationName>
+  </Process>
+  <Process>
+    <Source>43de24b6-7c14-46c7-a3f5-366d34b35f19</Source>
+    <Destination>98efa2e5-51de-4fbd-80f1-29a2295e5332</Destination>
+    <SourceName>pyTagger.iTunes</SourceName>
+    <DestinationName>yeimi_library_status</DestinationName>
+  </Process>
+</Lynx>
