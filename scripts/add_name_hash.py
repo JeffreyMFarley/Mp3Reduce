@@ -9,21 +9,16 @@ from generate_normalization_maps import *
 
 class AddNameHash:
     def __init__(self):
-        pass
+        self.maps = GenerateNormalizationMaps()
 
-    def run(self, inFile, outFile):
+    def run(self, tracks):
         # Load the curated album and artist dictionaries
-        maps = GenerateNormalizationMaps()
-        self.albums = maps.load(Maps.FILENAME_ALBUM)
-        self.artists = maps.load(Maps.FILENAME_ARTIST)
+        self.albums = self.maps.load(Maps.FILENAME_ALBUM)
+        self.artists = self.maps.load(Maps.FILENAME_ARTIST)
 
         # Load the scanned list of tracks & enrich
-        self.tracks = maps.snapshot.load(inFile)
-        for k,v in self.tracks.items():
-            self.tracks[k] = self.enrich(v)
-
-        # Save
-        maps.snapshot.save(outFile, self.tracks)
+        for k,v in tracks.items():
+            tracks[k] = self.enrich(v)
 
     #-------------------------------------------------------------------------------
     # Name hashing
@@ -88,4 +83,8 @@ if __name__ == '__main__':
         outFile = sys.argv[2]
 
     pipeline = AddNameHash()
-    pipeline.run(inFile, outFile)
+
+    # Load the scanned list of tracks & enrich
+    tracks = pipeline.maps.snapshot.load(inFile)
+    pipeline.run(tracks)
+    pipeline.maps.snapshot.save(outFile, tracks)

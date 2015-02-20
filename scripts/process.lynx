@@ -10,6 +10,7 @@
                 <xs:element name="ID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" />
                 <xs:element name="Name" type="xs:string" minOccurs="0" />
                 <xs:element name="Description" type="xs:string" minOccurs="0" />
+                <xs:element name="Phase" type="xs:int" minOccurs="0" />
               </xs:sequence>
             </xs:complexType>
           </xs:element>
@@ -27,7 +28,7 @@
           </xs:element>
         </xs:choice>
       </xs:complexType>
-      <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:unique name="Constraint1">
         <xs:selector xpath=".//Scripts" />
         <xs:field xpath="ID" />
       </xs:unique>
@@ -44,58 +45,92 @@
   <Scripts>
     <ID>c1a2ee6c-cae7-48b7-8923-448733be7fa1</ID>
     <Name>add_name_hash</Name>
+    <Phase>2</Phase>
   </Scripts>
   <Scripts>
     <ID>6cc282cc-e4c0-48db-827c-6bcd5c8792ab</ID>
     <Name>consolidation_plan</Name>
+    <Phase>0</Phase>
   </Scripts>
   <Scripts>
     <ID>303fc2bb-d2fd-4e43-819c-1ebd89a59193</ID>
     <Name>curated_updates</Name>
+    <Phase>1</Phase>
   </Scripts>
   <Scripts>
     <ID>8d233687-525a-4ee8-8fad-c594d3b14f0d</ID>
     <Name>execution_plan</Name>
+    <Phase>1</Phase>
   </Scripts>
   <Scripts>
     <ID>e2256027-ab39-46ee-a75e-edef404ccf97</ID>
     <Name>generate_bash_script</Name>
+    <Phase>1</Phase>
   </Scripts>
   <Scripts>
     <ID>2cd6eb91-fc34-4b54-90f2-8ec52e4d038a</ID>
     <Name>generate_normalization_maps</Name>
+    <Phase>2</Phase>
   </Scripts>
   <Scripts>
     <ID>6ff87221-3575-4107-8a9f-89a93cc6fa69</ID>
     <Name>keep_or_delete</Name>
+    <Phase>1</Phase>
   </Scripts>
   <Scripts>
     <ID>ed1e5d0a-4f40-404f-a8d6-bb892b4eabe1</ID>
     <Name>list_missing_tags</Name>
+    <Phase>2</Phase>
   </Scripts>
   <Scripts>
     <ID>e11451a1-f26b-4b40-ba7f-742877a1e4a3</ID>
     <Name>list_mp3s</Name>
+    <Phase>1</Phase>
   </Scripts>
   <Scripts>
     <ID>6d182e67-c3d8-4e90-9131-a8aaf5be1131</ID>
     <Name>qc</Name>
+    <Phase>1</Phase>
   </Scripts>
   <Scripts>
     <ID>83227d94-86d3-443e-964a-fbcfeeca752e</ID>
     <Name>update_library</Name>
+    <Phase>1</Phase>
   </Scripts>
   <Scripts>
     <ID>98efa2e5-51de-4fbd-80f1-29a2295e5332</ID>
     <Name>yeimi_library_status</Name>
+    <Phase>1</Phase>
   </Scripts>
   <Scripts>
     <ID>de86a700-8fef-49d8-b694-6ac46da13a61</ID>
     <Name>pyTagger.mp3_snapshot</Name>
+    <Phase>2</Phase>
   </Scripts>
   <Scripts>
     <ID>43de24b6-7c14-46c7-a3f5-366d34b35f19</ID>
     <Name>pyTagger.iTunes</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>f86caa18-5f81-4772-ba84-cbb6c872dfe6</ID>
+    <Name>pyTagger.snaphot_converter</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>81e8a647-4d0c-4349-aa30-229adcf15856</ID>
+    <Name>pyTagger.update_from_snapshot</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>2ef8599e-1fa6-423b-89c9-733b8d16d7eb</ID>
+    <Name>find_duplicates</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>d026f9e6-1923-4beb-90f5-281756874443</ID>
+    <Name>grade_duplicates</Name>
+    <Phase>2</Phase>
   </Scripts>
   <Process>
     <Source>2cd6eb91-fc34-4b54-90f2-8ec52e4d038a</Source>
@@ -186,5 +221,41 @@
     <Destination>98efa2e5-51de-4fbd-80f1-29a2295e5332</Destination>
     <SourceName>pyTagger.iTunes</SourceName>
     <DestinationName>yeimi_library_status</DestinationName>
+  </Process>
+  <Process>
+    <Source>ed1e5d0a-4f40-404f-a8d6-bb892b4eabe1</Source>
+    <Destination>f86caa18-5f81-4772-ba84-cbb6c872dfe6</Destination>
+    <SourceName>list_missing_tags</SourceName>
+    <DestinationName>pyTagger.snaphot_converter</DestinationName>
+  </Process>
+  <Process>
+    <Source>f86caa18-5f81-4772-ba84-cbb6c872dfe6</Source>
+    <Destination>81e8a647-4d0c-4349-aa30-229adcf15856</Destination>
+    <SourceName>pyTagger.snaphot_converter</SourceName>
+    <DestinationName>pyTagger.update_from_snapshot</DestinationName>
+  </Process>
+  <Process>
+    <Source>81e8a647-4d0c-4349-aa30-229adcf15856</Source>
+    <Destination>de86a700-8fef-49d8-b694-6ac46da13a61</Destination>
+    <SourceName>pyTagger.update_from_snapshot</SourceName>
+    <DestinationName>pyTagger.mp3_snapshot</DestinationName>
+  </Process>
+  <Process>
+    <Source>de86a700-8fef-49d8-b694-6ac46da13a61</Source>
+    <Destination>c1a2ee6c-cae7-48b7-8923-448733be7fa1</Destination>
+    <SourceName>pyTagger.mp3_snapshot</SourceName>
+    <DestinationName>add_name_hash</DestinationName>
+  </Process>
+  <Process>
+    <Source>c1a2ee6c-cae7-48b7-8923-448733be7fa1</Source>
+    <Destination>2ef8599e-1fa6-423b-89c9-733b8d16d7eb</Destination>
+    <SourceName>add_name_hash</SourceName>
+    <DestinationName>find_duplicates</DestinationName>
+  </Process>
+  <Process>
+    <Source>2ef8599e-1fa6-423b-89c9-733b8d16d7eb</Source>
+    <Destination>d026f9e6-1923-4beb-90f5-281756874443</Destination>
+    <SourceName>find_duplicates</SourceName>
+    <DestinationName>grade_duplicates</DestinationName>
   </Process>
 </Lynx>

@@ -4,8 +4,11 @@ import sys
 import csv
 from pyTagger.mp3_snapshot import Mp3Snapshot
 from pyTagger.path_segmentation import PathSegmentation
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
+try:
+    from fuzzywuzzy import fuzz
+    from fuzzywuzzy import process
+except ImportError:
+    print('Only loading of normalized files will be supported', file=sys.stderr)
 
 FILENAME_ARTIST = r'..\data\artist_map.txt'
 FILENAME_ALBUM = r'..\data\album_map.txt'
@@ -26,7 +29,7 @@ class GenerateNormalizationMaps:
         for fullPath, track in tracks.items():
             pathInfo = segmenter.split(fullPath)
             if self.hasRightRoot(pathInfo):
-                artist, album = pathInfo['subdir'].split('/')
+                artist, album = pathInfo['subdir'].split(pathSep)
                 self.artists.add(self.normalize(artist))
                 self.albums.add(self.normalize(album))
 
@@ -137,7 +140,7 @@ class GenerateNormalizationMaps:
         theList.sort()
         with open(fileName, 'w', encoding='utf-8') as f:
             for l in theList:
-                f.writelines([l, os.linesep])
+                f.writelines([l, '\n'])
 
     def save(self, fileName, theList):
         with open(fileName, 'w', encoding='utf-8') as f:
