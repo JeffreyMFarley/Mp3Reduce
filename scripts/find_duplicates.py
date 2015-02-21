@@ -1,28 +1,6 @@
 import os
 import sys
-import datetime
 import pyTagger
-
-class ProgressBar:
-    def __init__(self, count):
-        self.total = count
-        self.value = 0
-        self.bar = count / 20
-        self.start = datetime.datetime.now()
-        sys.stderr.write(' 1  2    5    7  9 |\n')
-        sys.stderr.write('-0--5----0----5--0-|\n')
-    
-    def increment(self):
-        self.value += 1
-        if self.value > self.bar:
-            sys.stderr.write('#')
-            sys.stderr.flush()
-            self.value = 0
-
-    def finish(self):
-        finish = datetime.datetime.now() - self.start
-        sys.stderr.write('\n')
-        sys.stderr.write('The operation took '+str(finish.total_seconds())+' seconds \n')
 
 class UndirectedTrackNode:
     def __init__(self, key, track):
@@ -50,7 +28,7 @@ class FindDuplicates():
     def buildRelations(self, graph):
         queue = list(graph.nodes)
         l = len(queue)
-        progress = ProgressBar((l * (l-1))/2)
+        progress = pyTagger.ProgressBar((l * (l-1))/2, 'Find Duplicates Step 1: Building relations')
 
         while len(queue) > 0:
             n0 = queue.pop(0)
@@ -61,7 +39,7 @@ class FindDuplicates():
         progress.finish()
 
     def extractDisjoints(self, graph, tracks):
-        progress = ProgressBar(len(graph.nodes))
+        progress = pyTagger.ProgressBar(graph.nodes, 'Find Duplicates Step 2: Extract Disjoints')
 
         group = 0
         while len(graph.nodes) > 0:

@@ -2,8 +2,8 @@ from __future__ import print_function
 import os
 import sys
 import csv
-from pyTagger.mp3_snapshot import Mp3Snapshot
-from pyTagger.path_segmentation import PathSegmentation
+import pyTagger
+import unicodedata
 try:
     from fuzzywuzzy import fuzz
     from fuzzywuzzy import process
@@ -19,11 +19,21 @@ class GenerateNormalizationMaps:
     def __init__(self):
         self.artists = set()
         self.albums = set()
-        self.snapshot = Mp3Snapshot()
+        self.snapshot = pyTagger.Mp3Snapshot()
+        self.translateTable = self.buildTranslateTable()
+
+    @classmethod
+    def buildTranslateTable(cls):
+        if sys.version >= '3':
+            return dict.fromkeys(c for c in range(sys.maxunicode)
+                                 if unicodedata.combining(chr(c)))
+        else:
+            return dict.fromkeys(c for c in range(sys.maxunicode)
+                                 if unicodedata.combining(unichr(c)))
 
     def generate(self, fileName, pathSep):
         tracks = self.snapshot.load(fileName)
-        segmenter = PathSegmentation(pathSep)
+        segmenter = pyTagger.PathSegmentation(pathSep)
 
         # Initialize the two sets with the directory names
         for fullPath, track in tracks.items():
@@ -33,16 +43,14 @@ class GenerateNormalizationMaps:
                 self.artists.add(self.normalize(artist))
                 self.albums.add(self.normalize(album))
 
-        #self.dump(self.artists, r'..\data\artist_set.txt')
-        #self.dump(self.albums, r'..\data\album_set.txt') 
+        albumSet = {x['album'] for x in filter(self.hasAlbum, tracks.values()) }
+        albumMap = self.enrichAndMap(albumSet, self.albums, 'Albums')
+        self.save(FILENAME_ALBUM, albumMap)
 
         artistSet = {x['artist'] for x in filter(self.hasArtist, tracks.values()) }
-        artistMap = self.enrichAndMap(artistSet, self.artists)
+        artistMap = self.enrichAndMap(artistSet, self.artists, 'Artists')
         self.save(FILENAME_ARTIST, artistMap)
 
-        albumSet = {x['album'] for x in filter(self.hasAlbum, tracks.values()) }
-        albumMap = self.enrichAndMap(albumSet, self.albums)
-        self.save(FILENAME_ALBUM, albumMap)
 
     #------------------------------------------------- ------------------------------
     # Relational Algebra
@@ -62,20 +70,12 @@ class GenerateNormalizationMaps:
     #-------------------------------------------------------------------------------
     # Functional
     #-------------------------------------------------------------------------------
-    def enrichAndMap(self, a, b):
+    def enrichAndMap(self, a, b, operation):
         result = []
-
-        j = 0
-        update = len(a) / 20
-        sys.stderr.write(' 1  2    5    7  9 |\n')
-        sys.stderr.write('-0--5----0----5--0-|\n')
+        progressBar = pyTagger.ProgressBar(a, operation)
 
         for x in sorted(a):
-            j += 1
-            if j > update:
-                sys.stderr.write('#')
-                sys.stderr.flush()
-                j = 0
+            progressBar.increment()
 
             nx = self.normalize(x)
             d = {KEY: x}
@@ -95,14 +95,15 @@ class GenerateNormalizationMaps:
 
             result.append(d)
 
-        sys.stderr.write('\n')
+        progressBar.finish()
         return result
 
     #-------------------------------------------------------------------------------
     # Name hashing
     #-------------------------------------------------------------------------------
     def normalize(self, s):
-        s0 = s.lower()
+        b = unicodedata.normalize('NFKD', s.lower())
+        s0 = b.translate(self.translateTable)
         s1 = self.filterArticles(s0)
         s2 = self.filterCharacters(s1)
         return s2
@@ -134,13 +135,6 @@ class GenerateNormalizationMaps:
             reader = csv.DictReader(f, dialect=csv.excel_tab)
             for row in reader:
                 yield row
-
-    def dump(self, theSet, fileName):
-        theList = list(theSet)
-        theList.sort()
-        with open(fileName, 'w', encoding='utf-8') as f:
-            for l in theList:
-                f.writelines([l, '\n'])
 
     def save(self, fileName, theList):
         with open(fileName, 'w', encoding='utf-8') as f:

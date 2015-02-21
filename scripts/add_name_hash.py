@@ -85,6 +85,7 @@ if __name__ == '__main__':
     pipeline = AddNameHash()
 
     # Load the scanned list of tracks & enrich
-    tracks = pipeline.maps.snapshot.load(inFile)
+    snapshot = pyTagger.Mp3Snapshot(True)
+    tracks = snapshot.load(inFile)
     pipeline.run(tracks)
-    pipeline.maps.snapshot.save(outFile, tracks)
+    snapshot.save(outFile, tracks)
