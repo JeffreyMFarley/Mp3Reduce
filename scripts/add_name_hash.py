@@ -20,13 +20,13 @@ class AddNameHash:
         for k,v in tracks.items():
             tracks[k] = self.enrich(v)
 
-    #-------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     # Name hashing
-    #-------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     def enrich(self, x):
         shaAccum = hashlib.sha1()
 
-        shaAccum.update(self.getTrack(x).encode())
+        #shaAccum.update(self.getTrack(x).encode())  # not everyone uses track#
         shaAccum.update(self.getTitle(x).encode())
         shaAccum.update(self.getArtist(x).encode())
         shaAccum.update(self.getAlbum(x).encode())
@@ -49,7 +49,8 @@ class AddNameHash:
 
     def getTitle(self, x):
         a = x['title'] if 'title' in x else ''
-        return a if a else ''
+        na = self.maps.normalize(a) if a else ''
+        return na
 
     def getArtist(self, x):
         a = x['artist'] if 'artist' in x else ''
@@ -57,7 +58,7 @@ class AddNameHash:
 
         na = self.artists[a] if a in self.artists else a
         if a not in self.artists:
-            print(a.encode(), 'Not Found', file=sys.stderr)
+            print('getArtist', a.encode(), 'Not Found', file=sys.stderr)
         return na
 
     def getAlbum(self, x):
@@ -66,7 +67,7 @@ class AddNameHash:
 
         na = self.albums[a] if a in self.albums else a
         if a not in self.albums:
-            print(a.encode(), 'Not Found', file=sys.stderr)
+            print('getAlbum', a.encode(), 'Not Found', file=sys.stderr)
         return na
     
 #-------------------------------------------------------------------------------

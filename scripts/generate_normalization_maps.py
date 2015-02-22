@@ -21,15 +21,41 @@ class GenerateNormalizationMaps:
         self.albums = set()
         self.snapshot = pyTagger.Mp3Snapshot()
         self.translateTable = self.buildTranslateTable()
+        self.replaceTable = self.buildReplaceTable()
 
     @classmethod
     def buildTranslateTable(cls):
+        table = {}
         if sys.version >= '3':
-            return dict.fromkeys(c for c in range(sys.maxunicode)
-                                 if unicodedata.combining(chr(c)))
+            table = dict.fromkeys(c for c in range(sys.maxunicode)
+                                  if unicodedata.combining(chr(c)))
         else:
-            return dict.fromkeys(c for c in range(sys.maxunicode)
-                                 if unicodedata.combining(unichr(c)))
+            table = dict.fromkeys(c for c in range(sys.maxunicode)
+                                  if unicodedata.combining(unichr(c)))
+        # Remove punctuation
+        table.update(dict.fromkeys(ord(c) for c in ',<>\'"[]{}|`?!$%^()=;'))
+        
+        # Replace these with spaces
+        table.update(dict.fromkeys([ord(c) for c in '.:/\\-_~@#*'], ord(' ')))
+
+        # latin extended not handled by decombining
+        table[0xf0] = ord('d')   # eth
+
+        # greek
+        table[0x3b1] = ord('a')
+        table[0x3b4] = ord('d')
+
+        return table
+
+    @classmethod
+    def buildReplaceTable(cls):
+        table = {}
+        table['&'] = ' and '
+        table['+'] = ' and '
+        table['\xdf'] = 'ss'  # sharp s
+        table['\xe6'] = 'ae'  # ligature
+        table['\xfe'] = 'th'  # thorn
+        return table
 
     def generate(self, fileName, pathSep):
         tracks = self.snapshot.load(fileName)
@@ -56,10 +82,10 @@ class GenerateNormalizationMaps:
     # Relational Algebra
     #-------------------------------------------------------------------------------
     def hasArtist(self, x):
-        return 'artist' in x and x['artist'] != '' and x['artist'] != None
+        return 'artist' in x and x['artist']
 
     def hasAlbum(self, x):
-        return 'album' in x and x['album'] != '' and x['album'] != None
+        return 'album' in x and x['album']
 
     def hasRightRoot(self, x):
         return 'root' in x and x['root'] in ['/Volumes/Music/Jeff Music/Music', '/Volumes/Music/Jennifer Music', r'\Jeff Music\Music', r'\Jennifer Music']
@@ -109,9 +135,12 @@ class GenerateNormalizationMaps:
         return s2
 
     def filterCharacters(self, s):
-        s0 = ''.join( c for c in s if c not in '.<>?\':"[]{}|`~!@#$%^&*()-_=+' )  # Remove punctuation
-        s1 = ''.join( c if c not in ',/\\;' else ' ' for c in s0 ) # replace these with spaces
-        s2 = ' '.join(s1.split()) # remove multiple spaces
+        s0 = s
+        for c in s:
+            if c in self.replaceTable:
+                s0 = s0.replace(c, self.replaceTable[c])
+
+        s2 = ' '.join(s0.split()) # remove multiple spaces
         return s2
 
     def filterArticles(self, s):
@@ -131,16 +160,19 @@ class GenerateNormalizationMaps:
         return {x[KEY]:x['value'] for x in self.iter_load(fileName)}
 
     def iter_load(self, fileName):
-         with open(fileName, 'r', encoding='utf-8') as f:
+         with open(fileName, 'r', encoding='utf_16_le') as f:
+            f.seek(2) # skip BOM
             reader = csv.DictReader(f, dialect=csv.excel_tab)
             for row in reader:
                 yield row
 
     def save(self, fileName, theList):
-        with open(fileName, 'w', encoding='utf-8') as f:
-            writer = csv.DictWriter(f, COLUMNS, dialect=csv.excel_tab, extrasaction='ignore')
+        with open(fileName, 'w', encoding='utf_16_le') as f:
+            f.write(u'\ufeff') # write BOM
+            writer = csv.DictWriter(f, COLUMNS, dialect=csv.excel_tab,
+                                    extrasaction='ignore', lineterminator='\n')
             writer.writeheader()
-            writer.writerows(sorted(theList, key=self.outputSort))
+            writer.writerows(sorted(theList, key=self.outputSort))                
 
 #-------------------------------------------------------------------------------
 # Main
