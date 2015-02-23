@@ -6,10 +6,12 @@ import binascii
 import hashlib
 import generate_normalization_maps as Maps
 from generate_normalization_maps import *
+import pyTagger
 
 class AddNameHash:
     def __init__(self):
         self.maps = GenerateNormalizationMaps()
+        self.segmenter = pyTagger.PathSegmentation('/')
 
     def run(self, tracks):
         # Load the curated album and artist dictionaries
@@ -18,12 +20,12 @@ class AddNameHash:
 
         # Load the scanned list of tracks & enrich
         for k,v in tracks.items():
-            tracks[k] = self.enrich(v)
+            tracks[k] = self.enrich(v, k)
 
     #--------------------------------------------------------------------------
     # Name hashing
     #--------------------------------------------------------------------------
-    def enrich(self, x):
+    def enrich(self, x, fullPath):
         shaAccum = hashlib.sha1()
 
         #shaAccum.update(self.getTrack(x).encode())  # not everyone uses track#
@@ -34,6 +36,16 @@ class AddNameHash:
         hash = shaAccum.digest();
         b2a = binascii.b2a_base64(hash).decode('ascii')
         x['nameHash'] = b2a.strip()
+
+        pathInfo = self.segmenter.split(fullPath)
+        if 'root' not in pathInfo:
+            x['root'] = ''
+        elif pathInfo['root'] in ['/Volumes/Music/Jeff Music/Music', r'\Jeff Music\Music']:
+            x['root'] = 'Jeff'
+        elif pathInfo['root'] in ['/Volumes/Music/Jennifer Music', r'\Jennifer Music']:
+            x['root'] = 'Jen'
+        else:
+            x['root'] = ''
 
         return x
 

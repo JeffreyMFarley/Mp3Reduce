@@ -20,6 +20,7 @@
     <Compile Include="find_duplicates.py" />
     <Compile Include="generate_normalization_maps.py" />
     <Compile Include="list_missing_tags.py" />
+    <Compile Include="phaseII_manual_updates.py" />
     <Compile Include="phaseII_process.py">
       <SubType>Code</SubType>
     </Compile>

@@ -132,6 +132,11 @@
     <Name>grade_duplicates</Name>
     <Phase>2</Phase>
   </Scripts>
+  <Scripts>
+    <ID>d23dcf91-08e3-4df4-ba40-ce23adc18a26</ID>
+    <Name>phaseII_manual_updates</Name>
+    <Phase>2</Phase>
+  </Scripts>
   <Process>
     <Source>2cd6eb91-fc34-4b54-90f2-8ec52e4d038a</Source>
     <Destination>c1a2ee6c-cae7-48b7-8923-448733be7fa1</Destination>
@@ -257,5 +262,11 @@
     <Destination>d026f9e6-1923-4beb-90f5-281756874443</Destination>
     <SourceName>find_duplicates</SourceName>
     <DestinationName>grade_duplicates</DestinationName>
+  </Process>
+  <Process>
+    <Source>d23dcf91-08e3-4df4-ba40-ce23adc18a26</Source>
+    <Destination>c1a2ee6c-cae7-48b7-8923-448733be7fa1</Destination>
+    <SourceName>phaseII_manual_updates</SourceName>
+    <DestinationName>add_name_hash</DestinationName>
   </Process>
 </Lynx>

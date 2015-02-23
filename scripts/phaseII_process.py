@@ -1,5 +1,6 @@
 from __future__ import print_function
 import pyTagger
+from phaseII_manual_updates import *
 from add_name_hash import *
 from find_duplicates import *
 
@@ -16,7 +17,7 @@ if __name__ == '__main__':
     if argc > 2:
         outFile = sys.argv[2]
 
-    pipeline = [AddNameHash(), FindDuplicates()]
+    pipeline = [PhaseII_PreHashUpdates(), AddNameHash(), FindDuplicates()]
 
     # Load the scanned list of tracks & enrich
     snapshot = pyTagger.Mp3Snapshot(True)
