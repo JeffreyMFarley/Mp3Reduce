@@ -31,7 +31,9 @@ class AddNameHash:
         #shaAccum.update(self.getTrack(x).encode())  # not everyone uses track#
         shaAccum.update(self.getTitle(x).encode())
         shaAccum.update(self.getArtist(x).encode())
-        shaAccum.update(self.getAlbum(x).encode())
+        nalbum = self.getAlbum(x)
+        x['n_album'] = nalbum
+        shaAccum.update(nalbum.encode())
 
         hash = shaAccum.digest();
         b2a = binascii.b2a_base64(hash).decode('ascii')
@@ -46,6 +48,10 @@ class AddNameHash:
             x['root'] = 'Jen'
         else:
             x['root'] = ''
+
+        x['subdir'] = pathInfo['subdir'] if 'subdir' in pathInfo else ''
+
+        x['tagScore'] = 0
 
         return x
 
