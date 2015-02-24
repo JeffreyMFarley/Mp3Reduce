@@ -13,7 +13,7 @@ class Group:
     def grade(self):
         # some easy ones
         l = len(self.tracks)
-        if l > 4 or l < 2:
+        if l > 10 or l < 2:
             self.markAllKeep(True)
             return
 
@@ -24,18 +24,26 @@ class Group:
         roots = {x['root'] for x in self.tracks.values()}
         nameHashes = {x['nameHash'] for x in self.tracks.values()}
 
+        summary = self.enrich(ids, fileHashes, nameHashes, roots, lengths)
         if len(ids) == 1 and len(fileHashes) == 1 and len(roots) == 2:
             self.markAllKeep('A')
-        else:
-            self.markAllKeep(','.join([str(len(ids)), 
-                                       str(len(fileHashes)), 
-                                       str(len(nameHashes)), 
-                                       str(len(roots)), 
-                                       str(len(lengths))]))
 
     def markAllKeep(self, v):
         for t in self.tracks.values():
             t['keep'] = v
+
+    def enrich(self, ids, fileHashes, nameHashes, roots, lengths):
+        summary = '{0},{1},{2},{3},{4}'.format(len(ids), len(fileHashes), len(nameHashes), len(roots), len(lengths))
+        for t in self.tracks.values():
+            t['gni'] = len(ids)
+            t['gnf'] = len(fileHashes)
+            t['gnn'] = len(nameHashes)
+            t['gnr'] = len(roots)
+            t['gnl'] = len(lengths)
+            t['gSummary'] = summary
+
+        return summary
+
 
 class GradeDuplicates():
     def __init__(self):
