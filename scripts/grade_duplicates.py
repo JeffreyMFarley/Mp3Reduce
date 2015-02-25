@@ -3,7 +3,28 @@ import sys
 import pyTagger
 import itertools
 
-class Group:
+class AlbumGroup():
+    def __init__(self):
+        self.tracks = {}
+
+    def add(self, path, track):
+        self.tracks[path] = track
+
+    def grade(self):
+        # gather group statistics
+        groups = {x['gSummary'] if 'gSummary' in x else '' for x in self.tracks.values()}
+        westerosi = sum([1 if x['root'] == 'Jeff' else 0 for x in self.tracks.values()])
+        yeimi = sum([1 if x['root'] == 'Jen' else 0 for x in self.tracks.values()])
+
+        # record the information
+        summary = '{0},{1},{2}'.format(len(groups), westerosi, yeimi)
+        for t in self.tracks.values():
+            t['ang'] = len(groups)
+            t['anw'] = westerosi
+            t['any'] = yeimi
+            t['aSummary'] = summary
+
+class TrackGroup:
     def __init__(self):
         self.tracks = {}
 
@@ -24,6 +45,13 @@ class Group:
         roots = {x['root'] for x in self.tracks.values()}
         nameHashes = {x['nameHash'] for x in self.tracks.values()}
 
+        # investigate 'lengths' a little deeper
+        if len(lengths) == 2:
+            asList = list(lengths) 
+            diff = abs(asList[0] - asList[1])
+            if diff <= 2:
+                lengths.pop()
+
         summary = self.enrich(ids, fileHashes, nameHashes, roots, lengths)
         if len(ids) == 1 and len(fileHashes) == 1 and len(roots) == 2:
             self.markAllKeep('A')
@@ -33,13 +61,13 @@ class Group:
             t['keep'] = v
 
     def enrich(self, ids, fileHashes, nameHashes, roots, lengths):
-        summary = '{0},{1},{2},{3},{4}'.format(len(ids), len(fileHashes), len(nameHashes), len(roots), len(lengths))
+        summary = '{0},{1},{2},{3},{4}'.format(len(fileHashes), len(ids), len(nameHashes), len(lengths), len(roots))
         for t in self.tracks.values():
-            t['gni'] = len(ids)
             t['gnf'] = len(fileHashes)
+            t['gni'] = len(ids)
             t['gnn'] = len(nameHashes)
-            t['gnr'] = len(roots)
             t['gnl'] = len(lengths)
+            t['gnr'] = len(roots)
             t['gSummary'] = summary
 
         return summary
@@ -50,24 +78,36 @@ class GradeDuplicates():
         pass
 
     def run(self, tracks):
+        self.scoreAsGroups(tracks)
+        self.scoreAsAlbums(tracks)
+
+    def scoreAsGroups(self, tracks):
         groups = {}
 
-        # build the group set
+        # build the groups from the duplcate ids
         for k,v in tracks.items():
             id = v['groupID']
             if id not in groups:
-                groups[id] = Group()
+                groups[id] = TrackGroup()
             groups[id].add(k,v)
 
         # grade the groups
         for g in groups.values():
             g.grade()
 
-    # -------------------------------------------------------------------------
-    # Relational Algebra
-    # -------------------------------------------------------------------------
-    def groupByKey(self, x):
-        return x['groupID']
+    def scoreAsAlbums(self, tracks):
+        groups = {}
+
+        # build the groups from the duplcate ids
+        for k,v in tracks.items():
+            id = v['n_album']
+            if id not in groups:
+                groups[id] = AlbumGroup()
+            groups[id].add(k,v)
+
+        # grade the groups
+        for g in groups.values():
+            g.grade()
 
 #-------------------------------------------------------------------------------
 # Main

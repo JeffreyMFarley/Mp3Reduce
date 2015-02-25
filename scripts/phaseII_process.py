@@ -25,4 +25,4 @@ if __name__ == '__main__':
     tracks = snapshot.load(inFile)
     for operation in pipeline:
         operation.run(tracks)
-    snapshot.save(outFile, tracks)
+        snapshot.save(outFile, tracks)
