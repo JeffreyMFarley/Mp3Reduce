@@ -50,7 +50,7 @@
   <Scripts>
     <ID>6cc282cc-e4c0-48db-827c-6bcd5c8792ab</ID>
     <Name>consolidation_plan</Name>
-    <Phase>0</Phase>
+    <Phase>1</Phase>
   </Scripts>
   <Scripts>
     <ID>303fc2bb-d2fd-4e43-819c-1ebd89a59193</ID>
@@ -135,6 +135,36 @@
   <Scripts>
     <ID>d23dcf91-08e3-4df4-ba40-ce23adc18a26</ID>
     <Name>phaseII_manual_updates</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>967816ac-826d-48e5-8576-7cc91e035935</ID>
+    <Name>pick_winners</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>c3fa1b85-d395-4ed8-8a69-b1eb640b62eb</ID>
+    <Name>generate_update_snapshot</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>89278114-1b84-4b84-a24a-f6023859f9ef</ID>
+    <Name>generate_delete_script</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>1ce515d6-e629-451d-8eb0-c1c4693ddf36</ID>
+    <Name>generate_westeros_update</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>ad58e448-3623-4a2e-980d-6386fc9d1ff1</ID>
+    <Name>generate_yeimi_update</Name>
+    <Phase>2</Phase>
+  </Scripts>
+  <Scripts>
+    <ID>a32b1b68-ef86-4482-8624-252073e84986</ID>
+    <Name>generate_white_list</Name>
     <Phase>2</Phase>
   </Scripts>
   <Process>
@@ -268,5 +298,41 @@
     <Destination>c1a2ee6c-cae7-48b7-8923-448733be7fa1</Destination>
     <SourceName>phaseII_manual_updates</SourceName>
     <DestinationName>add_name_hash</DestinationName>
+  </Process>
+  <Process>
+    <Source>d026f9e6-1923-4beb-90f5-281756874443</Source>
+    <Destination>967816ac-826d-48e5-8576-7cc91e035935</Destination>
+    <SourceName>grade_duplicates</SourceName>
+    <DestinationName>pick_winners</DestinationName>
+  </Process>
+  <Process>
+    <Source>967816ac-826d-48e5-8576-7cc91e035935</Source>
+    <Destination>c3fa1b85-d395-4ed8-8a69-b1eb640b62eb</Destination>
+    <SourceName>pick_winners</SourceName>
+    <DestinationName>generate_update_snapshot</DestinationName>
+  </Process>
+  <Process>
+    <Source>967816ac-826d-48e5-8576-7cc91e035935</Source>
+    <Destination>89278114-1b84-4b84-a24a-f6023859f9ef</Destination>
+    <SourceName>pick_winners</SourceName>
+    <DestinationName>generate_delete_script</DestinationName>
+  </Process>
+  <Process>
+    <Source>967816ac-826d-48e5-8576-7cc91e035935</Source>
+    <Destination>1ce515d6-e629-451d-8eb0-c1c4693ddf36</Destination>
+    <SourceName>pick_winners</SourceName>
+    <DestinationName>generate_westeros_update</DestinationName>
+  </Process>
+  <Process>
+    <Source>967816ac-826d-48e5-8576-7cc91e035935</Source>
+    <Destination>ad58e448-3623-4a2e-980d-6386fc9d1ff1</Destination>
+    <SourceName>pick_winners</SourceName>
+    <DestinationName>generate_yeimi_update</DestinationName>
+  </Process>
+  <Process>
+    <Source>967816ac-826d-48e5-8576-7cc91e035935</Source>
+    <Destination>a32b1b68-ef86-4482-8624-252073e84986</Destination>
+    <SourceName>pick_winners</SourceName>
+    <DestinationName>generate_white_list</DestinationName>
   </Process>
 </Lynx>

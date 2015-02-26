@@ -9,6 +9,9 @@ class PhaseII_PreHashUpdates():
     def __init__(self):
         pass
 
+    def __str__(self):
+        return 'Applying Pending Updates'
+
     def run(self, tracks):
         snapshot = pyTagger.Mp3Snapshot(True)
         updates = snapshot.load(FILENAME_PREHASHUPDATES)

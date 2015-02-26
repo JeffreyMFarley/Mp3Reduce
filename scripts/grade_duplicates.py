@@ -39,11 +39,11 @@ class TrackGroup:
             return
 
         # gather group statistics
-        lengths = {x['length'] for x in self.tracks.values()}
-        ids = {x['id'] for x in self.tracks.values()}
-        fileHashes = {x['fileHash'] for x in self.tracks.values()}
-        roots = {x['root'] for x in self.tracks.values()}
-        nameHashes = {x['nameHash'] for x in self.tracks.values()}
+        lengths = {x['length'] if 'length' in x else '' for x in self.tracks.values()}
+        ids = {x['id'] if 'id' in x else '' for x in self.tracks.values()}
+        fileHashes = {x['fileHash'] if 'fileHash' in x else '' for x in self.tracks.values()}
+        roots = {x['root'] if 'root' in x else '' for x in self.tracks.values()}
+        nameHashes = {x['nameHash'] if 'nameHash' in x else '' for x in self.tracks.values()}
 
         # investigate 'lengths' a little deeper
         if len(lengths) == 2:
@@ -52,15 +52,7 @@ class TrackGroup:
             if diff <= 2:
                 lengths.pop()
 
-        summary = self.enrich(ids, fileHashes, nameHashes, roots, lengths)
-        if len(ids) == 1 and len(fileHashes) == 1 and len(roots) == 2:
-            self.markAllKeep('A')
-
-    def markAllKeep(self, v):
-        for t in self.tracks.values():
-            t['keep'] = v
-
-    def enrich(self, ids, fileHashes, nameHashes, roots, lengths):
+        # record the information
         summary = '{0},{1},{2},{3},{4}'.format(len(fileHashes), len(ids), len(nameHashes), len(lengths), len(roots))
         for t in self.tracks.values():
             t['gnf'] = len(fileHashes)
@@ -70,12 +62,17 @@ class TrackGroup:
             t['gnr'] = len(roots)
             t['gSummary'] = summary
 
-        return summary
+    def markAllKeep(self, v):
+        for t in self.tracks.values():
+            t['keep'] = v
 
 
 class GradeDuplicates():
     def __init__(self):
         pass
+
+    def __str__(self):
+        return 'Grade Duplicates'
 
     def run(self, tracks):
         self.scoreAsGroups(tracks)

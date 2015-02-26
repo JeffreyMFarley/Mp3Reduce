@@ -4,6 +4,9 @@ from phaseII_manual_updates import *
 from add_name_hash import *
 from find_duplicates import *
 from grade_duplicates import *
+from pick_winners import *
+from generate_update_snapshot import *
+from generate_white_list import *
 
 #-------------------------------------------------------------------------------
 # Main
@@ -18,11 +21,14 @@ if __name__ == '__main__':
     if argc > 2:
         outFile = sys.argv[2]
 
-    pipeline = [PhaseII_PreHashUpdates(), AddNameHash(), FindDuplicates(), GradeDuplicates()]
+    pipeline = [FilterWhiteList(), PhaseII_PreHashUpdates(), AddNameHash(), 
+                FindDuplicates(), GradeDuplicates(), PickWinners(), 
+                GenerateUpdateSnapshot(), GenerateWhiteList()]
 
     # Load the scanned list of tracks & enrich
     snapshot = pyTagger.Mp3Snapshot(True)
     tracks = snapshot.load(inFile)
     for operation in pipeline:
+        print(operation)
         operation.run(tracks)
         snapshot.save(outFile, tracks)

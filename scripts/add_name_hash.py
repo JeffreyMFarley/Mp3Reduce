@@ -13,6 +13,9 @@ class AddNameHash:
         self.maps = GenerateNormalizationMaps()
         self.segmenter = pyTagger.PathSegmentation('/')
 
+    def __str__(self):
+        return 'Add Name Hash'
+
     def run(self, tracks):
         # Load the curated album and artist dictionaries
         self.albums = self.maps.load(Maps.FILENAME_ALBUM)
@@ -28,7 +31,7 @@ class AddNameHash:
     def enrich(self, x, fullPath):
         shaAccum = hashlib.sha1()
 
-        #shaAccum.update(self.getTrack(x).encode())  # not everyone uses track#
+        shaAccum.update(self.getTrack(x).encode())  # not everyone uses track#
         shaAccum.update(self.getTitle(x).encode())
         shaAccum.update(self.getArtist(x).encode())
         nalbum = self.getAlbum(x)

@@ -20,6 +20,9 @@ class FindDuplicates():
     def __init__(self):
         pass
 
+    def __str__(self):
+        return 'Find Duplicates'
+
     def run(self, tracks):
         graph = UndirectedGraph(tracks)
         self.buildRelations(graph)
@@ -28,7 +31,7 @@ class FindDuplicates():
     def buildRelations(self, graph):
         queue = list(graph.nodes)
         l = len(queue)
-        progress = pyTagger.ProgressBar((l * (l-1))/2, 'Find Duplicates Step 1: Building relations')
+        progress = pyTagger.ProgressBar((l * (l-1))/2, '  Step 1: Building relations')
 
         while len(queue) > 0:
             n0 = queue.pop(0)
@@ -39,7 +42,7 @@ class FindDuplicates():
         progress.finish()
 
     def extractDisjoints(self, graph, tracks):
-        progress = pyTagger.ProgressBar(graph.nodes, 'Find Duplicates Step 2: Extract Disjoints')
+        progress = pyTagger.ProgressBar(graph.nodes, '  Step 2: Extract Disjoints')
 
         group = 0
         while len(graph.nodes) > 0:
