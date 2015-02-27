@@ -17,11 +17,12 @@ class AlbumGroup():
         yeimi = sum([1 if x['root'] == 'Jen' else 0 for x in self.tracks.values()])
 
         # record the information
-        summary = '{0},{1},{2}'.format(len(groups), westerosi, yeimi)
+        summary = '{0},{1},{2},{3}'.format(len(groups), westerosi, yeimi, westerosi == yeimi)
         for t in self.tracks.values():
             t['ang'] = len(groups)
             t['anw'] = westerosi
             t['any'] = yeimi
+            t['anz'] = westerosi == yeimi
             t['aSummary'] = summary
 
 class TrackGroup:

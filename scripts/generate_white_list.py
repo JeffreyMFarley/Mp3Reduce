@@ -25,7 +25,7 @@ class GenerateWhiteList():
         self.fileName = fileName
 
     def __str__(self):
-        return 'Generating White List'
+        return 'Updating White List'
 
     def run(self, tracks):
         whitelist = _load(self.fileName)
@@ -33,9 +33,11 @@ class GenerateWhiteList():
             if ('keep' in v and v['keep'] == True
                 and 'ang' in v and v['ang'] == 1
                 and 'aSummary' in v and ',0' in v['aSummary']):
+                print('adding', k.encode(errors='replace'))
                 whitelist.add(k)
 
             if 'subdir' in v and 'Podcast' in v['subdir']:
+                print('adding', k.encode(errors='replace'))
                 whitelist.add(k)
 
         _save(self.fileName, whitelist)
@@ -46,7 +48,7 @@ class FilterWhiteList():
         self.fileName = fileName
 
     def __str__(self):
-        return 'Filtering Tracks to White List'
+        return 'Removing White List from Tracks'
 
     def run(self, tracks):
         whitelist = _load(self.fileName)

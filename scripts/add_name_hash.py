@@ -54,7 +54,7 @@ class AddNameHash:
 
         x['subdir'] = pathInfo['subdir'] if 'subdir' in pathInfo else ''
 
-        x['tagScore'] = 0
+        # x['tagScore'] = 0
 
         return x
 
