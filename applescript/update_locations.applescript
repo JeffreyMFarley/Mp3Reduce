@@ -7,66 +7,41 @@ Started with help from http://github.com/nikcub/itunesclean
 property appTitle : "Update iTunes File Locations"
 property appDesc : "Changes the file location of iTunes tracks while preserving playlists and ratings"
 
-set allTracks to {}
-set allTracksList to {}
-
-set allTracksListDialog to {}
-set allTracksIdList to {}
-set deadTrackListDialog to {}
 set deadTrackIdList to {}
-
 set errorList to {}
 
-tell application "iTunes"
-	set allTracks to every track
-	# set allTracks to (every track of playlist "My Top Rated")
-	
-	repeat with i from 1 to 25 #(length of allTracks)
-		try
-			set currentItem to item i of allTracks
-			tell item i of allTracks to set {n, al, ar, loc, tid, did} to {get name, get album, get artist, get location, get id, get database ID}
-			set qloc to POSIX path of ((location of currentItem) as string)
+set updates to {{title:"La Femme D'argent", source:"/Volumes/Music/Jennifer Music/Air/Moon Safari/01 La Femme D'argent.mp3"}}
+
+repeat with a in updates
+	set {title, sloc} to {title, source} of a
+	log sloc
+	set aliasedLoc to POSIX file sloc as alias
+	log aliasedLoc
+	tell application "iTunes"
+		set t to (some track of playlist "Library" whose name is title)
+		set rloc to {location} of t
+		log (rloc as string) is equal to (aliasedLoc as string)
+	end tell
+end repeat
+
+on scan_library()
+	tell application "iTunes"
+		repeat with t in every file track of library playlist 1
+			set {title, al, ar, loc, tid, did} to {name, album, artist, location, id, database ID} of t
+			set qloc to POSIX path of loc
 			
-			set currentItemText to ar & " " & al & " " & n
+			set currentItemText to ar & " " & al & " " & title
 			set currentItemId to did
 			
 			tell me
 				if not is_file(qloc) then
-					copy currentItemText to end of deadTrackListDialog
-					copy currentItemId to end of deadTrackIdList
+					# copy currentItemId to end of deadTrackIdList
+					log qloc
 				end if
 			end tell
-		on error errMsg number errNumber
-			copy currentItemText to end of errorList
-			# display dialog "Debug: " & errMsg buttons {"OK"} with icon caution
-		end try
-		
-		copy currentItemText to end of allTracksListDialog
-		copy currentItemId to end of allTracksIdList
-		
-	end repeat
-end tell
-
-set dialogResult to display dialog "Found " & ((length of deadTrackIdList) as string) & " tracks without files. Delete?" with icon note
-
-if button returned of dialogResult is "OK" then
-	set deletedCount to 0
-	try
-		tell application "iTunes"
-			repeat with curTrack in deadTrackIdList
-				# delete (some track of library playlist 1 whose database ID is curTrack)
-				set deletedCount to deletedCount + 1
-			end repeat
-		end tell
-	on error errMsg number errNum
-		display dialog "Error: Could not delete track id " & (curTrack as string) & " - " & errMsg buttons {"OK"} with icon caution
-	end try
-	display dialog (deletedCount as string) & " tracks deleted" buttons {"OK"} with icon note
-else
-	display dialog "nothing to do"
-	return
-end if
-
+		end repeat
+	end tell
+end scan_library
 
 on delete_tracks(track_list)
 	repeat with curTrack in track_list
