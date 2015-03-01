@@ -10,17 +10,20 @@ property appDesc : "Changes the file location of iTunes tracks while preserving 
 set deadTrackIdList to {}
 set errorList to {}
 
-set updates to {{title:"La Femme D'argent", source:"/Volumes/Music/Jennifer Music/Air/Moon Safari/01 La Femme D'argent.mp3"}}
+set updates to {{title:"La Femme D'argent", old_path:"/Volumes/Music/Jennifer Music/Air/Moon Safari/01 La Femme D'argent.mp3"}}
 
 repeat with a in updates
-	set {title, sloc} to {title, source} of a
+	set {title, sloc} to {title, old_path} of a
 	log sloc
 	set aliasedLoc to POSIX file sloc as alias
 	log aliasedLoc
 	tell application "iTunes"
 		set t to (some track of playlist "Library" whose name is title)
 		set rloc to {location} of t
-		log (rloc as string) is equal to (aliasedLoc as string)
+		log rloc
+		tell t
+			set location to aliasedLoc
+		end tell
 	end tell
 end repeat
 
