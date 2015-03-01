@@ -33,10 +33,13 @@ class GenerateWhiteList():
             if ('keep' in v and v['keep'] == True
                 and 'ang' in v and v['ang'] == 1
                 and 'aSummary' in v and ',0' in v['aSummary']):
+                if 'strategy' in v and v['strategy']:
+                    continue
                 print('adding', k.encode(errors='replace'))
                 whitelist.add(k)
 
-            if 'subdir' in v and 'Podcast' in v['subdir']:
+            if 'subdir' in v and ('Podcast' in v['subdir'] 
+                                  or 'Ringtones' in v['subdir']):
                 print('adding', k.encode(errors='replace'))
                 whitelist.add(k)
 
