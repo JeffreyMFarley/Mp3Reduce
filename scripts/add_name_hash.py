@@ -31,12 +31,11 @@ class AddNameHash:
     def enrich(self, x, fullPath):
         shaAccum = hashlib.sha1()
 
-        shaAccum.update(self.getTrack(x).encode())  # not everyone uses track#
-        shaAccum.update(self.getTitle(x).encode())
-        shaAccum.update(self.getArtist(x).encode())
-        nalbum = self.getAlbum(x)
-        x['n_album'] = nalbum
-        shaAccum.update(nalbum.encode())
+        parts = [self.getTrack(x), self.getTitle(x), self.getArtist(x), self.getAlbum(x)]
+        fields = ['n1', 'n2', 'n3', 'n_album']
+        for i, n in enumerate(parts):
+            shaAccum.update(n.encode())
+            x[fields[i]] = n;
 
         hash = shaAccum.digest();
         b2a = binascii.b2a_base64(hash).decode('ascii')
@@ -75,7 +74,8 @@ class AddNameHash:
 
     def getArtist(self, x):
         a = x['artist'] if 'artist' in x else ''
-        if not a: return ''
+        if not a:
+            return ''
 
         na = self.artists[a] if a in self.artists else a
         if a not in self.artists:
@@ -84,7 +84,8 @@ class AddNameHash:
 
     def getAlbum(self, x):
         a = x['album'] if 'album' in x else ''
-        if not a: return ''
+        if not a:
+            return ''
 
         na = self.albums[a] if a in self.albums else a
         if a not in self.albums:

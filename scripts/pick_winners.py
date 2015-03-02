@@ -22,15 +22,18 @@ class TrackGroupForWinners():
         # strategies
         if self.isStrategyA(track0):
             if 'Jeff' in track0['root']:
-                self.writeStrategy(track0, track1, 'A')
+                self.writeStrategy(track0, track1, 'A', keys[0])
             else:
-                self.writeStrategy(track1, track0, 'A')
+                self.writeStrategy(track1, track0, 'A', keys[1])
 
         elif self.isStrategyB(track0):
-            self.writeStrategy(track1, track0, 'B')
+            self.writeStrategy(track1, track0, 'B', keys[1])
 
         elif self.isStrategyB(track1):
-            self.writeStrategy(track0, track1, 'B')
+            self.writeStrategy(track0, track1, 'B', keys[0])
+
+        elif self.isStrategyC(track0):
+            self.writeStrategy(track0, track1, 'C')
 
         elif self.isStrategyD(track0):
             if keys[1][-5] == '2':
@@ -45,25 +48,33 @@ class TrackGroupForWinners():
         a1 = ('ang' in track and track['ang'] == 1 
               and 'gSummary' in track and track['gSummary'] == '2,1,1,1,2'
               and 'id' in track and track['id'])
-        a2 = ('ang' in track and track['ang'] > 1 
+        a2 = ('ang' in track and track['ang'] == 2 
               and 'gSummary' in track and track['gSummary'] == '1,1,1,1,2'
               and 'id' in track and track['id'])
         return a0 or a1 or a2
 
     def isStrategyB(self, track):
-        return ('subtitle' in track 
-            and track['subtitle'] in ['2007-03-18', '2009-07-19'])
+        b0 = ('subtitle' in track 
+              and track['subtitle'] in ['2007-03-18', '2009-07-19'])
+        b1 = ('album' in track 
+              and track['album'] == 'A Jolly Christmas from Frank Sinatra')
+        return b0 or b1
+
+    def isStrategyC(self, track):
+        return 'anz' in track and track['anz']
 
     def isStrategyD(self, track):
         return ('ang' in track and track['ang'] == 1 
             and 'gSummary' in track 
             and track['gSummary'] in ['1,1,1,1,1'])
 
-    def writeStrategy(self, winner, loser, strategy):
+    def writeStrategy(self, winner, loser, strategy, winningFile=None):
         winner['keep'] = True
         winner['strategy'] = strategy
         loser['keep'] = False
         loser['strategy'] = strategy
+        if winningFile:
+            loser['winner'] = winningFile
 
 class PickWinners():
     def __init__(self):
