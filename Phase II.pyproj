@@ -16,6 +16,7 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Compile Include="add_library_ids.py" />
     <Compile Include="add_name_hash.py" />
     <Compile Include="find_duplicates.py" />
     <Compile Include="generate_normalization_maps.py" />

@@ -167,6 +167,11 @@
     <Name>generate_white_list</Name>
     <Phase>2</Phase>
   </Scripts>
+  <Scripts>
+    <ID>7e51f7d4-190a-4f7f-97ed-b9b8f64d0569</ID>
+    <Name>add_library_ids</Name>
+    <Phase>2</Phase>
+  </Scripts>
   <Process>
     <Source>2cd6eb91-fc34-4b54-90f2-8ec52e4d038a</Source>
     <Destination>c1a2ee6c-cae7-48b7-8923-448733be7fa1</Destination>
@@ -283,9 +288,9 @@
   </Process>
   <Process>
     <Source>c1a2ee6c-cae7-48b7-8923-448733be7fa1</Source>
-    <Destination>2ef8599e-1fa6-423b-89c9-733b8d16d7eb</Destination>
+    <Destination>7e51f7d4-190a-4f7f-97ed-b9b8f64d0569</Destination>
     <SourceName>add_name_hash</SourceName>
-    <DestinationName>find_duplicates</DestinationName>
+    <DestinationName>add_library_ids</DestinationName>
   </Process>
   <Process>
     <Source>2ef8599e-1fa6-423b-89c9-733b8d16d7eb</Source>
@@ -334,5 +339,11 @@
     <Destination>a32b1b68-ef86-4482-8624-252073e84986</Destination>
     <SourceName>pick_winners</SourceName>
     <DestinationName>generate_white_list</DestinationName>
+  </Process>
+  <Process>
+    <Source>7e51f7d4-190a-4f7f-97ed-b9b8f64d0569</Source>
+    <Destination>2ef8599e-1fa6-423b-89c9-733b8d16d7eb</Destination>
+    <SourceName>add_library_ids</SourceName>
+    <DestinationName>find_duplicates</DestinationName>
   </Process>
 </Lynx>

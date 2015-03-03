@@ -2,6 +2,7 @@ from __future__ import print_function
 import pyTagger
 from phaseII_manual_updates import *
 from add_name_hash import *
+from add_library_ids import *
 from find_duplicates import *
 from grade_duplicates import *
 from pick_winners import *
@@ -21,7 +22,9 @@ if __name__ == '__main__':
     if argc > 2:
         outFile = sys.argv[2]
 
-    pipeline = [FilterWhiteList(), PhaseII_PreHashUpdates(), AddNameHash(), 
+    pipeline = [AddYeimiLibraryIds(), PhaseII_PreHashUpdates(), 
+                FilterWhiteList(), 
+                AddNameHash(), 
                 FindDuplicates(), GradeDuplicates(), PickWinners(), 
                 GenerateUpdateSnapshot(), GenerateWhiteList()]
 
