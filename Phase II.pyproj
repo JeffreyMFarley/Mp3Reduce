@@ -19,9 +19,11 @@
     <Compile Include="add_library_ids.py" />
     <Compile Include="add_name_hash.py" />
     <Compile Include="find_duplicates.py" />
+    <Compile Include="generate_delete_script.py" />
     <Compile Include="generate_normalization_maps.py" />
     <Compile Include="generate_update_snapshot.py" />
     <Compile Include="generate_white_list.py" />
+    <Compile Include="generate_yeimi_update.py" />
     <Compile Include="grade_duplicates.py" />
     <Compile Include="list_missing_tags.py" />
     <Compile Include="phaseII_manual_updates.py" />

@@ -6,8 +6,10 @@ from add_library_ids import *
 from find_duplicates import *
 from grade_duplicates import *
 from pick_winners import *
+from generate_delete_script import *
 from generate_update_snapshot import *
 from generate_white_list import *
+from generate_yeimi_update import *
 
 #-------------------------------------------------------------------------------
 # Main
@@ -26,7 +28,8 @@ if __name__ == '__main__':
                 FilterWhiteList(), 
                 AddNameHash(), 
                 FindDuplicates(), GradeDuplicates(), PickWinners(), 
-                GenerateUpdateSnapshot(), GenerateWhiteList()]
+                GenerateUpdateSnapshot(), GenerateWhiteList(),
+                GenerateYeimiDeleteScript(), GenerateYeimiUpdate()]
 
     # Load the scanned list of tracks & enrich
     snapshot = pyTagger.Mp3Snapshot(True)

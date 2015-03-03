@@ -20,6 +20,10 @@ class AddYeimiLibraryIds():
                 t = {'title': unicodedata.normalize('NFKD', cells[0]), 
                      'path': unicodedata.normalize('NFKD', cells[1]), 
                      'id': int(cells[2])}
+
+                if 'Sigur' in t['path']:
+                    t['path'] = t['path'].replace('<eth>', chr(240))
+
                 if t['path'] in tracks:
                     tracks[t['path']]['yeimi_id'] = t['id']
                 elif t['path'][-3:] == 'mp3':
