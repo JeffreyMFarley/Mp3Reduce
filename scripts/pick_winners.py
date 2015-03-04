@@ -33,13 +33,20 @@ class TrackGroupForWinners():
             self.writeStrategy(track0, track1, 'B', keys[0])
 
         elif self.isStrategyC(track0):
-            self.writeStrategy(track0, track1, 'C')
+            winner, loser = self.strategyCWinner(track0, track1)
+            self.writeStrategy(winner, loser, 'C', keys[0] if winner == track0 else keys[1])
 
         elif self.isStrategyD(track0):
             if keys[1][-5] == '2':
                 self.writeStrategy(track0, track1, 'D')
             else:
                 self.writeStrategy(track1, track0, 'D')
+
+        #elif self.isStrategyE(track0):
+        #    if 'Jen' in track0['root']:
+        #        self.writeStrategy(track0, track1, 'E', keys[0])
+        #    else:
+        #        self.writeStrategy(track1, track0, 'E', keys[1])
 
     def isStrategyA(self, track):
         a0 = ('ang' in track and track['ang'] == 1 
@@ -71,6 +78,30 @@ class TrackGroupForWinners():
         return ('ang' in track and track['ang'] == 1 
             and 'gSummary' in track 
             and track['gSummary'] in ['1,1,1,1,1'])
+
+    def isStrategyE(self, track):
+        return ('anw' in track and 'any' in track
+                and track['any'] > track['anw'])
+
+    def strategyCWinner(self, a, b):
+        if a['bitRate'] > b['bitRate']:
+            return (a,b)
+        if b['bitRate'] > a['bitRate']:
+            return (b,a)
+
+        if a['version'] > b['version']:
+            return (a,b)
+        if b['version'] > a['version']:
+            return (b,a)
+
+        # identical
+        # Jeff bias!
+        if a['root'] == 'Jeff':
+            return (a,b)
+        if b['root'] == 'Jeff':
+            return (b,a)
+
+        return (a,b)
 
     def writeStrategy(self, winner, loser, strategy, winningFile=None):
         winner['keep'] = True
