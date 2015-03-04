@@ -51,11 +51,15 @@ class TrackGroupForWinners():
         a2 = ('ang' in track and track['ang'] == 2 
               and 'gSummary' in track and track['gSummary'] == '1,1,1,1,2'
               and 'id' in track and track['id'])
-        return a0 or a1 or a2
+        a3 = ('ang' in track and track['ang'] > 1 
+              and 'gSummary' in track and track['gSummary'] == '2,1,1,1,2'
+              and 'anw' in track and 'any' in track
+              and track['anw'] > track['any'])
+        return a0 or a1 or a2 or a3
 
     def isStrategyB(self, track):
         b0 = ('subtitle' in track 
-              and track['subtitle'] in ['2007-03-18', '2009-07-19'])
+              and track['subtitle'] in ['2007-03-18', '2007-10-14', '2009-07-19'])
         b1 = ('album' in track 
               and track['album'] == 'A Jolly Christmas from Frank Sinatra')
         return b0 or b1

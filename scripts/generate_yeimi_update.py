@@ -2,6 +2,8 @@ import os
 import sys
 import unicodedata
 import pyTagger
+from add_library_ids import *
+from add_name_hash import *
         
 
 class GenerateYeimiUpdate():
@@ -32,19 +34,45 @@ class GenerateYeimiUpdate():
                 and 'yeimi_id' in x and x['yeimi_id']
                 and 'strategy' in x and x['strategy'] in ['A','D'])
 
+
+class MeantToInclude():
+    def __init__(self, fileName=r'..\data\yeimi_library_adds.txt'):
+        self.fileName = fileName
+
+    def __str__(self):
+        return "Generating List of Missing Albums"
+
+    def run(self, tracks):
+        missing = set()
+        for k,v in sorted(tracks.items()):
+            if self.predicate(v):
+                combined = v['n3'] + ' - ' + v['n_album']
+                missing.add(combined)
+        with open(self.fileName, 'w', encoding='macintosh', newline='') as fout:
+            for row in sorted(missing):
+                fout.write(row)
+                fout.write('\n')
+
+    def predicate(self, x):
+        return ('root' in x and x['root'] == 'Jen'
+                 and 'yeimi_id' not in x
+                )
+
 #-------------------------------------------------------------------------------
 # Main
 #-------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    inFile = r'..\data\mp3s_enh.json'
+    inFile = r'..\data\mp3s.json'
     argc = len(sys.argv)
     if argc > 1:
         inFile = sys.argv[1]
 
-    pipeline = GenerateYeimiUpdate()
+    pipeline = [AddYeimiLibraryIds(), AddNameHash(), MeantToInclude()]
 
     # Load the scanned list of tracks & enrich
     snapshot = pyTagger.Mp3Snapshot(True)
     tracks = snapshot.load(inFile)
-    pipeline.run(tracks)
+    for operation in pipeline:
+        print(operation)
+        operation.run(tracks)
