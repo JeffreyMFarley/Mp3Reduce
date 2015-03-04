@@ -29,6 +29,31 @@ class AddYeimiLibraryIds():
                 elif t['path'][-3:] == 'mp3':
                     print('  ', t['path'].encode(errors='ignore'), 'not found')
 
+class AddWesterosLibraryIds():
+    def __init__(self, fileName=r'..\data\westeros_library.txt'):
+        self.fileName = fileName
+
+    def __str__(self):
+        return "Adding IDs from Jeff's iTunes Library"
+
+    def run(self, tracks):
+        if not os.path.exists(self.fileName):
+            return
+        with open(self.fileName, 'r', encoding='utf-8') as f:
+            for row in f:
+                cells = row.strip().split('\t')
+                t = {'title': unicodedata.normalize('NFKD', cells[0]), 
+                     'path': unicodedata.normalize('NFKD', cells[1]), 
+                     'id': int(cells[2])}
+
+                #if 'Sigur' in t['path']:
+                #    t['path'] = t['path'].replace('<eth>', chr(240))
+
+                if t['path'] in tracks:
+                    tracks[t['path']]['westeros_id'] = t['id']
+                elif t['path'][-3:] == 'mp3':
+                    print('  ', t['path'].encode(errors='ignore'), 'not found')
+
 #-------------------------------------------------------------------------------
 # Main
 #-------------------------------------------------------------------------------
@@ -42,7 +67,7 @@ if __name__ == '__main__':
     if argc > 2:
         outFile = sys.argv[2]
 
-    pipeline = [AddYeimiLibraryIds()]
+    pipeline = [AddYeimiLibraryIds(), AddWesterosLibraryIds()]
 
     # Load the scanned list of tracks & enrich
     snapshot = pyTagger.Mp3Snapshot(True)
