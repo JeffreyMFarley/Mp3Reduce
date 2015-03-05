@@ -20,7 +20,7 @@ class GenerateYeimiDeleteScript():
                     path = unicodedata.normalize('NFKC', k)
                     if '"' in path:
                         path = path.replace('"', '""')
-                    fout.writelines('del -f "'+path+'"\n')
+                    fout.writelines('rm -f "'+path+'"\n')
 
     def predicate(self, x):
         return ('root' in x and x['root'] == 'Jen'

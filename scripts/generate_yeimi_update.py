@@ -63,12 +63,14 @@ class MeantToInclude():
 #-------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    inFile = r'..\data\mp3s.json'
+#    inFile = r'..\data\mp3s.json'
+    inFile = r'..\data\mp3s_enh.json'
     argc = len(sys.argv)
     if argc > 1:
         inFile = sys.argv[1]
 
-    pipeline = [AddYeimiLibraryIds(), AddNameHash(), MeantToInclude()]
+#    pipeline = [AddYeimiLibraryIds(), AddNameHash(), MeantToInclude()]
+    pipeline = [MeantToInclude()]
 
     # Load the scanned list of tracks & enrich
     snapshot = pyTagger.Mp3Snapshot(True)

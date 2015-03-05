@@ -19,7 +19,7 @@ class iTunesOnWindows():
             if track.Kind == ITTrackKindFile:
                 location = track.Location
                 if self.asPosix:
-                    location = location.replace(r'C:\Users\jfarley.15T-5CG3332ZD5\Music\Amazon MP3', '/Volumes/Music/Jeff Music/Music')
+                    location = location.replace(r'J:', '/Volumes/Music')
                     location = location.replace('\\', '/')
 
                 row = '\t'.join([track.Name, location, str(track.TrackDatabaseID)])
