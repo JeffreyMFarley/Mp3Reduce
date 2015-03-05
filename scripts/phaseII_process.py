@@ -24,8 +24,8 @@ if __name__ == '__main__':
     if argc > 2:
         outFile = sys.argv[2]
 
-    pipeline = [AddYeimiLibraryIds(), PhaseII_PreHashUpdates(), 
-                FilterWhiteList(), 
+    pipeline = [AddYeimiLibraryIds(), AddWesterosLibraryIds(), 
+                PhaseII_PreHashUpdates(), FilterWhiteList(), 
                 AddNameHash(), 
                 FindDuplicates(), GradeDuplicates(), PickWinners(), 
                 GenerateUpdateSnapshot(), GenerateWhiteList(),
