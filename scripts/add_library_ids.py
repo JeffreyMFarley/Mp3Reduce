@@ -14,15 +14,26 @@ class AddYeimiLibraryIds():
     def run(self, tracks):
         if not os.path.exists(self.fileName):
             return
+
         with open(self.fileName, 'r', encoding='macintosh') as f:
+            header = f.readline()
             for row in f:
                 cells = row.strip().split('\t')
                 t = {'title': unicodedata.normalize('NFKD', cells[0]), 
                      'path': unicodedata.normalize('NFKD', cells[1]), 
                      'id': int(cells[2])}
 
-                if 'Sigur' in t['path']:
+                if '<eth>' in t['path']:
                     t['path'] = t['path'].replace('<eth>', chr(240))
+
+                if 'Pel? Merengue' in t['path']:
+                    t['path'] = t['path'].replace('?', chr(12539))
+
+                if 'Lobotomy' in t['path']:
+                    t['path'] = t['path'].replace('?', chr(61480))
+
+                if '?' in t['path']:
+                    t['path'] = t['path'].replace('?', chr(61477))
 
                 if t['path'] in tracks:
                     tracks[t['path']]['yeimi_id'] = t['id']
@@ -39,19 +50,20 @@ class AddWesterosLibraryIds():
     def run(self, tracks):
         if not os.path.exists(self.fileName):
             return
+
+        # Windows OS is not case sensitive
+        ciTracks = {unicodedata.normalize('NFKD', k).lower():v for k,v in tracks.items() }
+
         with open(self.fileName, 'r', encoding='utf-8') as f:
             for row in f:
                 cells = row.strip().split('\t')
                 t = {'title': unicodedata.normalize('NFKD', cells[0]), 
-                     'path': unicodedata.normalize('NFKD', cells[1]), 
+                     'path': unicodedata.normalize('NFKD', cells[1]).lower(), 
                      'id': int(cells[2])}
 
-                #if 'Sigur' in t['path']:
-                #    t['path'] = t['path'].replace('<eth>', chr(240))
-
-                if t['path'] in tracks:
-                    tracks[t['path']]['westeros_id'] = t['id']
-                elif t['path'][-3:] == 'mp3':
+                if t['path'] in ciTracks:
+                    ciTracks[t['path']]['westeros_id'] = t['id']
+                elif t['path'][-3:] == 'mp3' and t['path'][0] not in ['c', 'l']:
                     print('  ', t['path'].encode(errors='ignore'), 'not found')
 
 #-------------------------------------------------------------------------------
@@ -75,4 +87,4 @@ if __name__ == '__main__':
     for operation in pipeline:
         print(operation)
         operation.run(tracks)
-        snapshot.save(outFile, tracks)
+        # snapshot.save(outFile, tracks)
