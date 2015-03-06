@@ -19,7 +19,7 @@ class GenerateYeimiUpdate():
                 if self.predicate(v):
                     title = v['title'] if 'title' in v else ''
                     oldPath = unicodedata.normalize('NFKC', k)
-                    if v['strategy'] == 'A':
+                    if v['strategy'] in ['A', 'C']:
                         newPath = unicodedata.normalize('NFKC', v['winner'])
                         action = 'update'
                     else:
@@ -29,11 +29,15 @@ class GenerateYeimiUpdate():
                     fout.writelines(row+'\n')
 
     def predicate(self, x):
-        return ('root' in x and x['root'] == 'Jen'
-                and 'keep' in x and not x['keep']
-                and 'yeimi_id' in x and x['yeimi_id']
-                and 'strategy' in x and x['strategy'] in ['A','D'])
-
+        a0 = ('root' in x and x['root'] == 'Jen'
+              and 'keep' in x and not x['keep']
+              and 'yeimi_id' in x and x['yeimi_id']
+              and 'strategy' in x)
+        a1 = a0 and x['strategy'] in ['A','D']
+        a2 = a0 and (x['strategy'] == 'C'
+                     and 'keepJeff' in x and x['keepJeff'] > 0
+                     and 'keepJen' in x and x['keepJen'] == 0)
+        return a1 or a2
 
 class MeantToInclude():
     def __init__(self, fileName=r'..\data\yeimi_library_adds.txt'):

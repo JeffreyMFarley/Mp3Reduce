@@ -3,6 +3,30 @@ import sys
 import pyTagger
 
 
+class AlbumGroupForWinners():
+    def __init__(self):
+        self.tracks = {}
+
+    def add(self, path, track):
+        self.tracks[path] = track
+
+    def calculateAggregates(self):
+        # gather group statistics
+        strategies = {x['strategy'] if 'strategy' in x else '-' for x in self.tracks.values()}
+        keepJeff = self.sumKeeps('Jeff')
+        keepJen = self.sumKeeps('Jen')
+
+        # record the information
+        summary = ','.join(sorted(strategies))
+        for t in self.tracks.values():
+            t['keepJeff'] = keepJeff
+            t['keepJen'] = keepJen
+            t['aStrat'] = summary
+
+    def sumKeeps(self, root):
+        return sum([1 for x in self.tracks.values() 
+                    if 'root' in x and x['root'] == root and 'keep' in x and x['keep']])
+
 class TrackGroupForWinners():
     def __init__(self):
         self.tracks = {}
@@ -31,7 +55,6 @@ class TrackGroupForWinners():
 
         elif self.isStrategyB(track1):
             self.writeStrategy(track0, track1, 'B', keys[0])
-
         elif self.isStrategyC(track0):
             winner, loser = self.strategyCWinner(track0, track1)
             self.writeStrategy(winner, loser, 'C', keys[0] if winner == track0 else keys[1])
@@ -42,11 +65,16 @@ class TrackGroupForWinners():
             else:
                 self.writeStrategy(track1, track0, 'D')
 
-        #elif self.isStrategyE(track0):
-        #    if 'Jen' in track0['root']:
-        #        self.writeStrategy(track0, track1, 'E', keys[0])
-        #    else:
-        #        self.writeStrategy(track1, track0, 'E', keys[1])
+        elif self.isStrategyCure(track0):
+                self.writeStrategy(track0, track1, 'Cure', keys[0])
+        elif self.isStrategyCure(track1):
+                self.writeStrategy(track1, track0, 'Cure', keys[1])
+
+        elif self.isStrategyE(track0):
+            if 'Jen' in track0['root']:
+                self.writeStrategy(track0, track1, 'E', keys[0])
+            else:
+                self.writeStrategy(track1, track0, 'E', keys[1])
 
     def isStrategyA(self, track):
         a0 = ('ang' in track and track['ang'] == 1 
@@ -83,6 +111,12 @@ class TrackGroupForWinners():
         return ('anw' in track and 'any' in track
                 and track['any'] > track['anw'])
 
+    def isStrategyCure(self, track):
+        return ('n3' == 'cure' 
+                and 'aSummary' in track and ',0,' in track['aSummary']
+                # and track['title'][0] not in ['0', '1']
+                )
+
     def strategyCWinner(self, a, b):
         if a['bitRate'] > b['bitRate']:
             return (a,b)
@@ -92,13 +126,6 @@ class TrackGroupForWinners():
         if a['version'] > b['version']:
             return (a,b)
         if b['version'] > a['version']:
-            return (b,a)
-
-        # identical
-        # Jeff bias!
-        if a['root'] == 'Jeff':
-            return (a,b)
-        if b['root'] == 'Jeff':
             return (b,a)
 
         return (a,b)
@@ -119,6 +146,10 @@ class PickWinners():
         return 'Pick Winners'
 
     def run(self, tracks):
+        self.pickWinnerWithinGroup(tracks)
+        self.aggregateByAlbums(tracks)
+
+    def pickWinnerWithinGroup(self, tracks):
         groups = {}
 
         # build the groups from the duplcate ids
@@ -131,6 +162,20 @@ class PickWinners():
         # process the groups
         for g in groups.values():
             g.pickWinner()
+
+    def aggregateByAlbums(self, tracks):
+        groups = {}
+
+        # build the groups from the albums ids
+        for k,v in tracks.items():
+            id = v['n_album']
+            if id not in groups:
+                groups[id] = AlbumGroupForWinners()
+            groups[id].add(k,v)
+
+        # grade the groups
+        for g in groups.values():
+            g.calculateAggregates()
 
 #-------------------------------------------------------------------------------
 # Main

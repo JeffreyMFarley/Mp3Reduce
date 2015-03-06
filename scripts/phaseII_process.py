@@ -38,3 +38,7 @@ if __name__ == '__main__':
         print(operation)
         operation.run(tracks)
         snapshot.save(outFile, tracks)
+
+    print('Convert to CSV')
+    converter = pyTagger.SnapshotConverter()
+    converter.convert(outFile, r'..\data\mp3s_enh.txt')

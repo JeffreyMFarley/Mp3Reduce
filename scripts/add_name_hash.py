@@ -53,7 +53,12 @@ class AddNameHash:
 
         x['subdir'] = pathInfo['subdir'] if 'subdir' in pathInfo else ''
 
-        # x['tagScore'] = 0
+        lc = 0
+        if 'yeimi_id' in x and x['yeimi_id'] > 0:
+            lc += 1
+        if 'westeros_id' in x and x['westeros_id'] > 0:
+            lc += 1
+        x['lib_count'] = lc
 
         return x
 
@@ -88,6 +93,11 @@ class AddNameHash:
             return ''
 
         na = self.albums[a] if a in self.albums else a
+
+        # a pretty common name, append the artist
+        if na == 'greatest hits':
+            na = na + '-' + self.getArtist(x)
+
         if a not in self.albums:
             print('getAlbum', a.encode(), 'Not Found', file=sys.stderr)
         return na
