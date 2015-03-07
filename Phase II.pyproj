@@ -22,6 +22,9 @@
     <Compile Include="generate_delete_script.py" />
     <Compile Include="generate_normalization_maps.py" />
     <Compile Include="generate_update_snapshot.py" />
+    <Compile Include="generate_westeros_update.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="generate_white_list.py" />
     <Compile Include="generate_yeimi_update.py" />
     <Compile Include="grade_duplicates.py" />
