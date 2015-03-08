@@ -56,7 +56,7 @@ class AddNameHash:
         lc = 0
         if 'yeimi_id' in x and x['yeimi_id'] > 0:
             lc += 1
-        if 'westeros_id' in x and x['westeros_id'] > 0:
+        if 'westeros_idh' in x and x['westeros_idh'] != 0:
             lc += 1
         x['lib_count'] = lc
 

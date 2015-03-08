@@ -59,10 +59,14 @@ class AddWesterosLibraryIds():
                 cells = row.strip().split('\t')
                 t = {'title': unicodedata.normalize('NFKD', cells[0]), 
                      'path': unicodedata.normalize('NFKD', cells[1]).lower(), 
-                     'id': int(cells[2])}
+                     'idh': int(cells[2]),
+                     'idl': int(cells[3])
+                     }
 
                 if t['path'] in ciTracks:
-                    ciTracks[t['path']]['westeros_id'] = t['id']
+                    ciTrack = ciTracks[t['path']]
+                    ciTrack['westeros_idh'] = t['idh']
+                    ciTrack['westeros_idl'] = t['idl']
                 elif t['path'][-3:] == 'mp3' and t['path'][0] not in ['c', 'l']:
                     print('  ', t['path'].encode(errors='ignore'), 'not found')
 
