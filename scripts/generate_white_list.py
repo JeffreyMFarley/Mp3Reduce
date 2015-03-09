@@ -28,6 +28,11 @@ class GenerateWhiteList():
         return 'Updating White List'
 
     def run(self, tracks):
+        # for these albums: we each own some tracks, but there are no overlaps
+        partials = ['amorica', 'brand new eyes', 
+                    'greatest hits my prerogative', 'i love rock n roll',
+                    'jagged little pill']
+
         whitelist = _load(self.fileName)
         for k,v in tracks.items():
             if ('keep' in v and v['keep'] == True
@@ -40,6 +45,10 @@ class GenerateWhiteList():
 
             if 'subdir' in v and ('Podcast' in v['subdir'] 
                                   or 'Ringtones' in v['subdir']):
+                print('adding', k.encode(errors='replace'))
+                whitelist.add(k)
+
+            if 'n_album' in v and v['n_album'] in partials:
                 print('adding', k.encode(errors='replace'))
                 whitelist.add(k)
 

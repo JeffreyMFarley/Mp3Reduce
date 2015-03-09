@@ -23,9 +23,9 @@ class TrackGroupForUpdate():
         track0 = self.tracks[keys[0]]
         track1 = self.tracks[keys[1]]
        
-        if self.predicate(track0):
+        if WU.predicate(track0):
             self.addUpdate(track0, track1, keys[1], snapshot)
-        elif self.predicate(track1):
+        elif WU.predicate(track1):
             self.addUpdate(track1, track0, keys[0], snapshot)
 
     def addUpdate(self, a, b, k, snapshot):
@@ -36,13 +36,6 @@ class TrackGroupForUpdate():
 
         snapshot.update({k: v})
 
-    def predicate(self, x):
-        a0 = ('root' in x and x['root'] == 'Jeff'
-              and 'keep' in x and not x['keep']
-              and 'westeros_idh' in x and x['westeros_idh']
-              and 'strategy' in x)
-        a1 = a0 and x['strategy'] in ['E']
-        return a1
 
 class GenerateUpdateSnapshot():
     def __init__(self, outfile=r'..\data\phaseII_updates.json'):

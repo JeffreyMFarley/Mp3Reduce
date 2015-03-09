@@ -30,6 +30,8 @@ class AlbumGroupForWinners():
 class TrackGroupForWinners():
     def __init__(self):
         self.tracks = {}
+        self.strategyA2 = [5120, 4768, 7502, 2622, 1238, 11472, 8844, 8288,
+                           8286, 12312]
 
     def add(self, path, track):
         self.tracks[path] = track
@@ -50,11 +52,16 @@ class TrackGroupForWinners():
             else:
                 self.writeStrategy(track1, track0, 'A', keys[1])
 
+        elif self.isStrategyA2(track0):
+            self.writeStrategy(track1, track0, 'A', keys[1])
+        elif self.isStrategyA2(track1):
+            self.writeStrategy(track0, track1, 'A', keys[0])
+
         elif self.isStrategyB(track0):
             self.writeStrategy(track1, track0, 'B', keys[1])
-
         elif self.isStrategyB(track1):
             self.writeStrategy(track0, track1, 'B', keys[0])
+
         elif self.isStrategyC(track0):
             winner, loser = self.strategyCWinner(track0, track1)
             self.writeStrategy(winner, loser, 'C', keys[0] if winner == track0 else keys[1])
@@ -92,11 +99,15 @@ class TrackGroupForWinners():
               and track['anw'] > track['any'])
         return a0 or a1 or a2 or a3
 
+    def isStrategyA2(self, track):
+        return 'yeimi_id' in track and track['yeimi_id'] in self.strategyA2
+
     def isStrategyB(self, track):
         b0 = ('subtitle' in track 
               and track['subtitle'] in ['2007-03-18', '2007-10-14', '2009-07-19'])
         b1 = ('album' in track 
-              and track['album'] == 'A Jolly Christmas from Frank Sinatra')
+              and track['album'] == 'A Jolly Christmas from Frank Sinatra'
+              and track['root'] == 'Jeff')
         return b0 or b1
 
     def isStrategyC(self, track):
