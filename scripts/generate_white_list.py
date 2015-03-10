@@ -29,7 +29,7 @@ class GenerateWhiteList():
 
     def run(self, tracks):
         # for these albums: we each own some tracks, but there are no overlaps
-        partials = ['amorica', 'brand new eyes', 
+        partials = ['amorica', 'brand new eyes', 'natural born killers',
                     'greatest hits my prerogative', 'i love rock n roll',
                     'jagged little pill']
 

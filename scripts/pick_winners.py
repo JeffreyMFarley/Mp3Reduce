@@ -31,7 +31,7 @@ class TrackGroupForWinners():
     def __init__(self):
         self.tracks = {}
         self.strategyA2 = [5120, 4768, 7502, 2622, 1238, 11472, 8844, 8288,
-                           8286, 12312]
+                           8286, 10860, 10862, 10998, 12312, 34697]
 
     def add(self, path, track):
         self.tracks[path] = track
@@ -100,7 +100,11 @@ class TrackGroupForWinners():
         return a0 or a1 or a2 or a3
 
     def isStrategyA2(self, track):
-        return 'yeimi_id' in track and track['yeimi_id'] in self.strategyA2
+        a0 = 'yeimi_id' in track and track['yeimi_id'] in self.strategyA2
+        a1 = ('n_album' in track 
+              and track['n_album'] in ['mirror conspiracy', 'moon antarctica', 'broken social scene']
+              and track['root'] == 'Jen')
+        return a0 or a1
 
     def isStrategyB(self, track):
         b0 = ('subtitle' in track 

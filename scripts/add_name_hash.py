@@ -12,6 +12,7 @@ class AddNameHash:
     def __init__(self):
         self.maps = GenerateNormalizationMaps()
         self.segmenter = pyTagger.PathSegmentation('/')
+        self.commonAlbumNames = ['greatest hits', 'greatest', 'singles', 'live', 'substance']
 
     def __str__(self):
         return 'Add Name Hash'
@@ -95,7 +96,7 @@ class AddNameHash:
         na = self.albums[a] if a in self.albums else a
 
         # a pretty common name, append the artist
-        if na == 'greatest hits':
+        if na in self.commonAlbumNames:
             na = na + '-' + self.getArtist(x)
 
         if a not in self.albums:

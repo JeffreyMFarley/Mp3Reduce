@@ -29,9 +29,7 @@ class PhaseII_PreHashUpdates():
                 print('revert', k, 'not found in track list', file=sys.stderr)
             else:
                 track = tracks[k]
-                for field in ['id', 'ufid', 'subtitle']:
-                    if field in track:
-                        del track[field]
+                track.update(v)
 
 #-------------------------------------------------------------------------------
 # Main
