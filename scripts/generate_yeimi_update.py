@@ -4,10 +4,11 @@ import unicodedata
 import pyTagger
 from add_library_ids import *
 from add_name_hash import *
-        
+      
+PATH = r'..\data\yeimi_library_updates.txt'  
 
 class GenerateYeimiUpdate():
-    def __init__(self, fileName=r'..\data\yeimi_library_updates.txt'):
+    def __init__(self, fileName=PATH):
         self.fileName = fileName
 
     def __str__(self):

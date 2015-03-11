@@ -69,6 +69,6 @@ class iTunesOnWindows():
 
 if __name__ == '__main__':
     pipeline = iTunesOnWindows()
-    pipeline.scan()
+    pipeline.update()
 
 

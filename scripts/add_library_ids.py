@@ -4,8 +4,11 @@ import pyTagger
 import urllib
 import unicodedata
 
+PATH_YEIMI = r'..\data\yeimi_library.txt'
+PATH_WESTEROS = r'..\data\westeros_library.txt'
+
 class AddYeimiLibraryIds():
-    def __init__(self, fileName=r'..\data\yeimi_library.txt'):
+    def __init__(self, fileName=PATH_YEIMI):
         self.fileName = fileName
 
     def __str__(self):
@@ -41,7 +44,7 @@ class AddYeimiLibraryIds():
                     print('  ', t['path'].encode(errors='ignore'), 'not found')
 
 class AddWesterosLibraryIds():
-    def __init__(self, fileName=r'..\data\westeros_library.txt'):
+    def __init__(self, fileName=PATH_WESTEROS):
         self.fileName = fileName
 
     def __str__(self):

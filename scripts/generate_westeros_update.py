@@ -2,12 +2,14 @@ import os
 import sys
 import unicodedata
 import pyTagger
-        
+      
+PATH_IMAGES = r'..\data\extract_images.txt'
+PATH_LIBRARY = r'..\data\westeros_library_update.txt'
 
 class GenerateWesterosUpdate():
     def __init__(self, 
-                 imagesFileName=r'..\data\extract_images.txt', 
-                 libraryUpdateFileName=r'..\data\westeros_library_update.txt'):
+                 imagesFileName=PATH_IMAGES, 
+                 libraryUpdateFileName=PATH_LIBRARY):
         self.imagesFileName = imagesFileName
         self.libraryUpdateFileName = libraryUpdateFileName
 

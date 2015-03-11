@@ -4,9 +4,11 @@ import unicodedata
 import pyTagger
 
 RECYCLE_PATH = r'/Volumes/Music/recycle/'
+PATH_YEIMI = r'..\data\delete_jen.sh'
+PATH_WESTEROS = r'..\data\delete_jeff.sh'
 
 class GenerateYeimiDeleteScript():
-    def __init__(self, fileName=r'..\data\delete_jen.sh'):
+    def __init__(self, fileName=PATH_YEIMI):
         self.fileName = fileName
 
     def __str__(self):
@@ -33,7 +35,7 @@ class GenerateYeimiDeleteScript():
         return a1 or a2
 
 class GenerateWesterosDeleteScript():
-    def __init__(self, fileName=r'..\data\delete_jeff.sh'):
+    def __init__(self, fileName=PATH_WESTEROS):
         self.fileName = fileName
 
     def __str__(self):

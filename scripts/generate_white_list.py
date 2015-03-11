@@ -2,6 +2,8 @@ import os
 import sys
 import pyTagger
 
+PATH = r'..\data\white_list.txt'
+
 def _load(fileName):
     if not os.path.exists(fileName):
         return set()
@@ -21,7 +23,7 @@ def _save(fileName, theSet):
             f.write('\n')
 
 class GenerateWhiteList():
-    def __init__(self, fileName=r'..\data\white_list.txt'):
+    def __init__(self, fileName=PATH):
         self.fileName = fileName
 
     def __str__(self):
@@ -56,7 +58,7 @@ class GenerateWhiteList():
 
 
 class FilterWhiteList():
-    def __init__(self, fileName=r'..\data\white_list.txt'):
+    def __init__(self, fileName=PATH):
         self.fileName = fileName
 
     def __str__(self):

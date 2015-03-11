@@ -3,10 +3,13 @@ import os
 import sys
 import pyTagger
 
+PATH_MANUAL = r'..\data\phaseII_prehash_updates.json'
+PATH_REVERT = r'..\data\revert_strategy_E.json'
+
 class PhaseII_PreHashUpdates():
     def __init__(self, 
-                 manualFileName=r'..\data\phaseII_prehash_updates.json',
-                 revertFileName=r'..\data\revert_strategy_E.json'):
+                 manualFileName=PATH_MANUAL,
+                 revertFileName=PATH_REVERT):
         self.manualFileName = manualFileName
         self.revertFileName = revertFileName
 

@@ -3,6 +3,7 @@ import sys
 from generate_westeros_update import GenerateWesterosUpdate as WU
 import pyTagger
 
+PATH = r'..\data\phaseII_updates.json'
 
 class TrackGroupForUpdate():
     def __init__(self, updater, columns):
@@ -38,7 +39,7 @@ class TrackGroupForUpdate():
 
 
 class GenerateUpdateSnapshot():
-    def __init__(self, outfile=r'..\data\phaseII_updates.json'):
+    def __init__(self, outfile=PATH):
         self.outfile = outfile
         self.updater = pyTagger.UpdateFromSnapshot()
         self.columns = set(pyTagger.Formatter.columns) - set(pyTagger.Formatter.mp3Info)
