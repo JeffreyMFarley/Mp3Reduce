@@ -30,8 +30,6 @@ class AlbumGroupForWinners():
 class TrackGroupForWinners():
     def __init__(self):
         self.tracks = {}
-        self.strategyA2 = [5120, 4768, 7502, 2622, 1238, 11472, 8844, 8288,
-                           8286, 10860, 10862, 10998, 12312, 34697]
 
     def add(self, path, track):
         self.tracks[path] = track
@@ -100,18 +98,28 @@ class TrackGroupForWinners():
         return a0 or a1 or a2 or a3
 
     def isStrategyA2(self, track):
-        a0 = 'yeimi_id' in track and track['yeimi_id'] in self.strategyA2
-        a1 = ('n_album' in track 
-              and track['n_album'] in ['mirror conspiracy', 'moon antarctica', 'broken social scene']
-              and track['root'] == 'Jen')
-        return a0 or a1
+        a0 = (track['root'] == 'Jen' and 'n_album' in track
+              and track['n_album'] in ['broken social scene', 
+                                       'de la soul is dead', 'fashion nugget', 
+                                       'formica blues', 'making mirrors',
+                                       'mirror conspiracy', 'moon antarctica',
+                                       'out of time', 'pretty hate machine',
+                                       'shaking the tree', 'twice upon a time the singles',
+                                       'uforb', 'us', 
+                                       'very best of bananarama'
+                                       ])
+        return a0
 
     def isStrategyB(self, track):
         b0 = ('subtitle' in track 
               and track['subtitle'] in ['2007-03-18', '2007-10-14', '2009-07-19'])
-        b1 = ('album' in track 
-              and track['album'] == 'A Jolly Christmas from Frank Sinatra'
-              and track['root'] == 'Jeff')
+        b1 = (track['root'] == 'Jeff' and 'n_album' in track
+              and track['n_album'] in ['eyelid movies', 'gimme fiction',
+                                       'jolly christmas from frank sinatra', 
+                                       'reservoir dogs',
+                                       'we have the facts and were voting yes',
+                                       'yoshimi battles the pink robots'
+                                       ])
         return b0 or b1
 
     def isStrategyC(self, track):
@@ -141,6 +149,16 @@ class TrackGroupForWinners():
         if a['version'] > b['version']:
             return (a,b)
         if b['version'] > a['version']:
+            return (b,a)
+
+        if 'lib_count' in a and 'lib_count' not in b:
+            return (a,b)
+        if 'lib_count' in b and 'lib_count' not in a:
+            return (b,a)
+
+        if not b['lib_count']:
+            return (a,b)
+        if not a['lib_count']:
             return (b,a)
 
         return (a,b)
