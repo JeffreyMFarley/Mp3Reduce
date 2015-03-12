@@ -28,7 +28,15 @@ class GenerateYeimiDeleteScript():
             for k in ['/Volumes/Music/Jennifer Music/Portishead/Portishead Assorted/Portishead - Sheared Times (Rare).mp3',
                       '/Volumes/Music/Jeff Music/Music/Compilations/Becoming RemiXed/06 6 Underground (Perfecto Mix).mp3',
                       '/Volumes/Music/Jennifer Music/Talking Heads/Talking Heads Assorted/Talking Heads - Psycho Killer.mp3',
-                      '/Volumes/Music/Jennifer Music/Talking Heads/Talking Heads Assorted/Talking Heads - Cities.mp3'
+                      '/Volumes/Music/Jennifer Music/Talking Heads/Talking Heads Assorted/Talking Heads - Cities.mp3',
+                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/01 Ready Steady go.mp3',
+                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/03 Time of Your Life.mp3',
+                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/04 Hypnotised.mp3',
+                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/10 Motion.mp3',
+                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/11 The Harder They Come.mp3',
+                      '/Volumes/Music/Jennifer Music/Nine Inch Nails/The Downward Spiral/04 March of the Pigs.mp3',
+                      '/Volumes/Music/Jennifer Music/Nine Inch Nails/The Downward Spiral [Explicit]/05 Closer [Explicit].mp3',
+                      '/Volumes/Music/Jennifer Music/Nine Inch Nails/The Downward Spiral/09 Big Man With a Gun.mp3'
                       ]:
                 path = unicodedata.normalize('NFKC', k)
                 if '"' in path:

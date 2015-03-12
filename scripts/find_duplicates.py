@@ -44,7 +44,7 @@ class FindDuplicates():
     def extractDisjoints(self, graph, tracks):
         progress = pyTagger.ProgressBar(graph.nodes, '  Step 2: Extract Disjoints')
 
-        group = 0
+        group = 1
         while len(graph.nodes) > 0:
             progress.increment()
             n0 = graph.nodes.pop()

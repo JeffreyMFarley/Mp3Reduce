@@ -122,10 +122,16 @@ class TrackGroupForWinners():
                                        'gorillaz',
                                        'greatest hits-simon garfunkel',
                                        'jolly christmas from frank sinatra', 
-                                       'maps', 'protection', 'reservoir dogs',
-                                       'substance-joy division',
+                                       'let it be', 'maps', 'moon safari',
+                                       'morning star',
+                                       'protection', 'reservoir dogs',
+                                       'songs in the key of life',
+                                       'substance-joy division', 'tidal',
+                                       'under the pink',
                                        'we have the facts and were voting yes',
-                                       'yoshimi battles the pink robots'
+                                       'whatever and ever amen', 'white album',
+                                       'yoshimi battles the pink robots', 
+                                       'youve come a long way baby'
                                        ])
         return b0 or b1
 
