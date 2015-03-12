@@ -12,7 +12,7 @@ class AddNameHash:
     def __init__(self):
         self.maps = GenerateNormalizationMaps()
         self.segmenter = pyTagger.PathSegmentation('/')
-        self.commonAlbumNames = ['greatest hits', 'greatest', 'singles', 'live', 'substance']
+        self.commonAlbumNames = ['greatest hits', 'greatest', 'singles', 'live', 'substance', 'essential mix bbc']
 
     def __str__(self):
         return 'Add Name Hash'

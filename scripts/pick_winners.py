@@ -70,16 +70,18 @@ class TrackGroupForWinners():
             else:
                 self.writeStrategy(track1, track0, 'D')
 
-        elif self.isStrategyCure(track0):
-                self.writeStrategy(track0, track1, 'Cure', keys[0])
-        elif self.isStrategyCure(track1):
-                self.writeStrategy(track1, track0, 'Cure', keys[1])
+        elif self.isStrategyF(track0):
+                self.writeStrategy(track0, track1, 'F', keys[0])
+        elif self.isStrategyF(track1):
+                self.writeStrategy(track1, track0, 'F', keys[1])
 
         elif self.isStrategyE(track0):
             if 'Jen' in track0['root']:
-                self.writeStrategy(track0, track1, 'E', keys[0])
+                if track0['bitRate'] >= track1['bitRate']:
+                    self.writeStrategy(track0, track1, 'E', keys[0])
             else:
-                self.writeStrategy(track1, track0, 'E', keys[1])
+                if track1['bitRate'] >= track0['bitRate']:
+                    self.writeStrategy(track1, track0, 'E', keys[1])
 
     def isStrategyA(self, track):
         a0 = ('ang' in track and track['ang'] == 1 
@@ -103,7 +105,8 @@ class TrackGroupForWinners():
                                        'de la soul is dead', 'fashion nugget', 
                                        'formica blues', 'making mirrors',
                                        'mirror conspiracy', 'moon antarctica',
-                                       'out of time', 'pretty hate machine',
+                                       'out of time', 'post',
+                                       'pretty hate machine',
                                        'shaking the tree', 'twice upon a time the singles',
                                        'uforb', 'us', 
                                        'very best of bananarama'
@@ -114,9 +117,13 @@ class TrackGroupForWinners():
         b0 = ('subtitle' in track 
               and track['subtitle'] in ['2007-03-18', '2007-10-14', '2009-07-19'])
         b1 = (track['root'] == 'Jeff' and 'n_album' in track
-              and track['n_album'] in ['eyelid movies', 'gimme fiction',
+              and track['n_album'] in ['aenima', 'amnesiac', 'amplified',
+                                       'eyelid movies', 'gimme fiction',
+                                       'gorillaz',
+                                       'greatest hits-simon garfunkel',
                                        'jolly christmas from frank sinatra', 
-                                       'reservoir dogs',
+                                       'maps', 'protection', 'reservoir dogs',
+                                       'substance-joy division',
                                        'we have the facts and were voting yes',
                                        'yoshimi battles the pink robots'
                                        ])
@@ -134,11 +141,14 @@ class TrackGroupForWinners():
         return ('anw' in track and 'any' in track
                 and track['any'] > track['anw'])
 
-    def isStrategyCure(self, track):
-        return ('n3' == 'cure' 
-                and 'aSummary' in track and ',0,' in track['aSummary']
-                # and track['title'][0] not in ['0', '1']
-                )
+    def isStrategyF(self, track):
+        f0 = (track['n3'] in ['cure', 'portishead'] 
+              and 'aSummary' in track and ',0,' in track['aSummary']
+              and track['title'][0] not in ['0', '1']
+             )
+        if f0 and track['title'][0:3] == '10:':
+            f0 = False
+        return f0
 
     def strategyCWinner(self, a, b):
         if a['bitRate'] > b['bitRate']:

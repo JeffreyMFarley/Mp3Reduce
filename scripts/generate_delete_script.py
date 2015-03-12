@@ -24,6 +24,18 @@ class GenerateYeimiDeleteScript():
                         path = path.replace('"', '""')
                     fout.writelines('rm -f "'+path+'"\n')
 
+            # manual deletes
+            for k in ['/Volumes/Music/Jennifer Music/Portishead/Portishead Assorted/Portishead - Sheared Times (Rare).mp3',
+                      '/Volumes/Music/Jeff Music/Music/Compilations/Becoming RemiXed/06 6 Underground (Perfecto Mix).mp3',
+                      '/Volumes/Music/Jennifer Music/Talking Heads/Talking Heads Assorted/Talking Heads - Psycho Killer.mp3',
+                      '/Volumes/Music/Jennifer Music/Talking Heads/Talking Heads Assorted/Talking Heads - Cities.mp3'
+                      ]:
+                path = unicodedata.normalize('NFKC', k)
+                if '"' in path:
+                    path = path.replace('"', '""')
+                fout.writelines('rm -f "'+path+'"\n')
+
+
     def predicate(self, x):
         a0 = ('root' in x and x['root'] == 'Jen'
               and 'keep' in x and not x['keep']
