@@ -31,7 +31,7 @@ def import_files():
         shutil.copy(kira, file)
        
 def export_files():
-    files = [O2.PATH_MANUAL, O7.PATH, O8.PATH_WESTEROS, O8.PATH_YEIMI, O9.PATH]
+    files = [O2.PATH_MANUAL, O7.PATH, O8.PATH_WESTEROS, O8.PATH_YEIMI, O9.PATH, O10.PATH_IMAGES]
     for file in files:
         kira = KiraPath(file)
         shutil.copy(file, kira)
@@ -50,7 +50,8 @@ if __name__ == '__main__':
     if argc > 2:
         outFile = sys.argv[2]
 
-    isWesteros = socket.gethostname() == 'WESTEROS'
+    hostName = socket.gethostname()
+    isWesteros = hostName == 'Westeros'
 
     pipeline = [O1.AddYeimiLibraryIds(), O1.AddWesterosLibraryIds(), 
                 O2.PhaseII_PreHashUpdates(), WL.FilterWhiteList(), 

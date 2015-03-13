@@ -58,8 +58,10 @@ class iTunesOnWindows():
 
                 track = self.tracks.ItemByPersistentID(t.idHigh, t.idLow)
                 nloc = unicodedata.normalize('NFKC', track.location).lower()
-                if nloc == t.oldPath.lower():
+                if nloc == t.oldPath.lower() and os.path.exists(t.newPath):
                     track.location = t.newPath
+                elif not os.path.exists(t.newPath):
+                    print('Bad Path!', t.oldPath.encode(errors='ignore'))
                 else:
                     print('Not Found!', t.oldPath.encode(errors='ignore'))
 
@@ -69,6 +71,7 @@ class iTunesOnWindows():
 
 if __name__ == '__main__':
     pipeline = iTunesOnWindows()
-    pipeline.update()
+    # need validation!
+    pipeline.scan()
 
 
