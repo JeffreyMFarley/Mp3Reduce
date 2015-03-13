@@ -25,18 +25,7 @@ class GenerateYeimiDeleteScript():
                     fout.writelines('rm -f "'+path+'"\n')
 
             # manual deletes
-            for k in ['/Volumes/Music/Jennifer Music/Portishead/Portishead Assorted/Portishead - Sheared Times (Rare).mp3',
-                      '/Volumes/Music/Jeff Music/Music/Compilations/Becoming RemiXed/06 6 Underground (Perfecto Mix).mp3',
-                      '/Volumes/Music/Jennifer Music/Talking Heads/Talking Heads Assorted/Talking Heads - Psycho Killer.mp3',
-                      '/Volumes/Music/Jennifer Music/Talking Heads/Talking Heads Assorted/Talking Heads - Cities.mp3',
-                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/01 Ready Steady go.mp3',
-                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/03 Time of Your Life.mp3',
-                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/04 Hypnotised.mp3',
-                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/10 Motion.mp3',
-                      '/Volumes/Music/Jennifer Music/Paul Oakenfold/Bunkka/11 The Harder They Come.mp3',
-                      '/Volumes/Music/Jennifer Music/Nine Inch Nails/The Downward Spiral/04 March of the Pigs.mp3',
-                      '/Volumes/Music/Jennifer Music/Nine Inch Nails/The Downward Spiral [Explicit]/05 Closer [Explicit].mp3',
-                      '/Volumes/Music/Jennifer Music/Nine Inch Nails/The Downward Spiral/09 Big Man With a Gun.mp3'
+            for k in ["/Volumes/Music/Jennifer Music/The Cure/Boys Don't Cry/03 03 03 - 10.15 saturday night.mp3"
                       ]:
                 path = unicodedata.normalize('NFKC', k)
                 if '"' in path:
@@ -48,7 +37,7 @@ class GenerateYeimiDeleteScript():
         a0 = ('root' in x and x['root'] == 'Jen'
               and 'keep' in x and not x['keep']
               and 'strategy' in x)
-        a1 = a0 and x['strategy'] in ['A','D']
+        a1 = a0 and x['strategy'] in ['A','D','F']
         a2 = a0 and (x['strategy'] == 'C'
                      and 'keepJeff' in x and x['keepJeff'] > 0
                      and 'keepJen' in x and x['keepJen'] == 0)
