@@ -1,4 +1,4 @@
-set thePath to "yeimi_library.txt"
+set thePath to POSIX file "/Volumes/Music/yeimi_library.txt"
 
 set fRef to (open for access file thePath with write permission)
 try
@@ -12,7 +12,11 @@ try
 			set {title, loc, tid, did} to {name, location, id, database ID} of t
 			
 			write (title as string) & "	" to fRef
-			write (POSIX path of loc as string) & "	" to fRef
+			try
+				write (POSIX path of loc as string) & "	" to fRef
+			on error
+				write "<Bad Path>" & "	" to fRef
+			end try
 			write (did as string) to fRef
 			write return to fRef
 		end repeat
