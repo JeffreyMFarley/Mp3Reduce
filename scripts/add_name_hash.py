@@ -73,6 +73,9 @@ class AddNameHash:
             pass
 
         a = "%02d" % track
+        if 'totalDisc' in x and x['totalDisc'] and x['totalDisc'] > 1:
+            a = ("d%02d-" % x['disc']) + a
+
         return a
 
     def getTitle(self, x):

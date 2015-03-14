@@ -37,7 +37,7 @@ class GenerateYeimiDeleteScript():
         a0 = ('root' in x and x['root'] == 'Jen'
               and 'keep' in x and not x['keep']
               and 'strategy' in x)
-        a1 = a0 and x['strategy'] in ['A','D','F']
+        a1 = a0 and x['strategy'] in ['A','D','F', 'H']
         a2 = a0 and (x['strategy'] == 'C'
                      and 'keepJeff' in x and x['keepJeff'] > 0
                      and 'keepJen' in x and x['keepJen'] == 0)
@@ -64,7 +64,7 @@ class GenerateWesterosDeleteScript():
         a0 = ('root' in x and x['root'] == 'Jeff'
               and 'keep' in x and not x['keep']
               and 'strategy' in x)
-        a1 = a0 and x['strategy'] in ['B']
+        a1 = a0 and x['strategy'] in ['B', 'G']
         a2 = a0 and (x['strategy'] == 'C'
                      and 'keepJeff' in x and x['keepJeff'] == 0
                      and 'keepJen' in x and x['keepJen'] > 0)

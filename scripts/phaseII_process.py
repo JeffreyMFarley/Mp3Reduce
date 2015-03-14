@@ -15,6 +15,7 @@ import generate_delete_script as O8
 import generate_white_list as WL
 import generate_yeimi_update as O9
 import generate_westeros_update as O10
+import generate_copy_script as O11
 
 PATH_INPUT = r'..\data\mp3s.json'
 PATH_OUTPUT_JSON = r'..\data\mp3s_enh.json'
@@ -31,7 +32,7 @@ def import_files():
         shutil.copy(kira, file)
        
 def export_files():
-    files = [O2.PATH_MANUAL, O7.PATH, O8.PATH_WESTEROS, O8.PATH_YEIMI, O9.PATH, O10.PATH_IMAGES]
+    files = [O2.PATH_MANUAL, O7.PATH, O8.PATH_WESTEROS, O8.PATH_YEIMI, O9.PATH, O10.PATH_IMAGES, O11.PATH]
     for file in files:
         kira = KiraPath(file)
         shutil.copy(file, kira)
@@ -59,7 +60,8 @@ if __name__ == '__main__':
                 O4.FindDuplicates(), O5.GradeDuplicates(), O6.PickWinners(), 
                 O7.GenerateUpdateSnapshot(), WL.GenerateWhiteList(),
                 O8.GenerateYeimiDeleteScript(), O8.GenerateWesterosDeleteScript(), 
-                O9.GenerateYeimiUpdate(), O10.GenerateWesterosUpdate()]
+                O9.GenerateYeimiUpdate(), O10.GenerateWesterosUpdate(), 
+                O11.GenerateCopyScript()]
 
     if isWesteros:
         print('Importing from KIRA')

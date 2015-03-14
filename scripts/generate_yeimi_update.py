@@ -20,7 +20,7 @@ class GenerateYeimiUpdate():
                 if self.predicate(v):
                     title = v['title'] if 'title' in v else ''
                     oldPath = unicodedata.normalize('NFKC', k)
-                    if v['strategy'] in ['A', 'C', 'F']:
+                    if v['strategy'] in ['A', 'C', 'F', 'H']:
                         newPath = unicodedata.normalize('NFKC', v['winner'])
                         action = 'update'
                     else:
@@ -34,7 +34,7 @@ class GenerateYeimiUpdate():
               and 'keep' in x and not x['keep']
               and 'yeimi_id' in x and x['yeimi_id']
               and 'strategy' in x)
-        a1 = a0 and x['strategy'] in ['A','D','F']
+        a1 = a0 and x['strategy'] in ['A','D','F','H']
         a2 = a0 and (x['strategy'] == 'C'
                      and 'keepJeff' in x and x['keepJeff'] > 0
                      and 'keepJen' in x and x['keepJen'] == 0)

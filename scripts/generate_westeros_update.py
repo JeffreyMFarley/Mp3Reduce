@@ -25,7 +25,7 @@ class GenerateWesterosUpdate():
                 fImages.writelines(k+'\n')
                 title = v['title'] if 'title' in v else ''
                 oldPath = unicodedata.normalize('NFKC', k)
-                if v['strategy'] in ['B', 'C']:
+                if v['strategy'] in ['B', 'C', 'G']:
                     newPath = unicodedata.normalize('NFKC', v['winner'])
                     action = 'update'
                 else:
@@ -43,7 +43,7 @@ class GenerateWesterosUpdate():
               and 'keep' in x and not x['keep']
               and 'westeros_idh' in x and x['westeros_idh']
               and 'strategy' in x)
-        a1 = a0 and x['strategy'] in ['B']
+        a1 = a0 and x['strategy'] in ['B', 'G']
         a2 = a0 and (x['strategy'] == 'C'
                      and 'keepJeff' in x and x['keepJeff'] == 0
                      and 'keepJen' in x and x['keepJen'] > 0)

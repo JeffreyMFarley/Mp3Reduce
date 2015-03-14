@@ -71,17 +71,23 @@ class TrackGroupForWinners():
                 self.writeStrategy(track1, track0, 'D')
 
         elif self.isStrategyF(track0):
-                self.writeStrategy(track0, track1, 'F', keys[0])
+            self.writeStrategy(track0, track1, 'F', keys[0])
         elif self.isStrategyF(track1):
-                self.writeStrategy(track1, track0, 'F', keys[1])
+            self.writeStrategy(track1, track0, 'F', keys[1])
+
+        elif self.isStrategyG(track0, track1, keys[0], keys[1]):
+            pass
+
+        elif self.isStrategyH(track0):
+            self.writeStrategy(track0, track1, 'H', keys[0])
+        elif self.isStrategyH(track1):
+            self.writeStrategy(track1, track0, 'H', keys[0])
 
         elif self.isStrategyE(track0):
             if 'Jen' in track0['root']:
-                if track0['bitRate'] >= track1['bitRate']:
-                    self.writeStrategy(track0, track1, 'E', keys[0])
+                self.writeStrategy(track0, track1, 'E', keys[0])
             else:
-                if track1['bitRate'] >= track0['bitRate']:
-                    self.writeStrategy(track1, track0, 'E', keys[1])
+                self.writeStrategy(track1, track0, 'E', keys[1])
 
     def isStrategyA(self, track):
         a0 = ('ang' in track and track['ang'] == 1 
@@ -123,7 +129,8 @@ class TrackGroupForWinners():
                                        'gorillaz',
                                        'greatest hits-simon garfunkel',
                                        'jolly christmas from frank sinatra', 
-                                       'let it be', 'maps', 'moon safari',
+                                       'let it be', 'magical mystery tour',
+                                       'maps', 'moon safari',
                                        'morning star', 'past masters 2',
                                        'protection', 'reservoir dogs',
                                        'songs in the key of life',
@@ -146,8 +153,7 @@ class TrackGroupForWinners():
             and track['gSummary'] in ['1,1,1,1,1'])
 
     def isStrategyE(self, track):
-        return ('anw' in track and 'any' in track
-                and track['any'] > track['anw'])
+        return 'anw' in track and 'any' in track and track['any'] > track['anw']
 
     def isStrategyF(self, track):
         f0 = (track['n3'] in ['cure', 'portishead'] 
@@ -157,6 +163,29 @@ class TrackGroupForWinners():
         if f0 and track['title'][0:3] == '10:':
             f0 = False
         return f0
+
+    def isStrategyG(self, track0, track1, file0, file1):
+        # not ready
+        if ('n_album' in track0 and track0['n_album'] in 
+            ['broken', 'fragile', 'selected ambient works volume 2']):
+            return False
+
+        e0 = (self.isStrategyE(track0) 
+              and 'Jen' in track0['root']
+              and 'Jeff' in track1['root'])
+        if e0 and track1['bitRate'] > track0['bitRate']:
+            self.writeStrategyG(track0, track1, file0, file1)
+            return True
+        e1 = (self.isStrategyE(track1) 
+              and 'Jen' in track1['root']
+              and 'Jeff' in track0['root'])
+        if e1 and track0['bitRate'] > track1['bitRate']:
+            self.writeStrategyG(track1, track0, file1, file0)
+            return True
+    
+    def isStrategyH(self, track):
+        return ('n_album' in track and track['n_album'] == 'achtung baby'
+                and 'westeros_idh' in track and track['westeros_idh'])
 
     def strategyCWinner(self, a, b):
         if a['bitRate'] > b['bitRate']:
@@ -188,6 +217,13 @@ class TrackGroupForWinners():
         loser['strategy'] = strategy
         if winningFile:
             loser['winner'] = winningFile
+
+    def writeStrategyG(self, jenTrack, jeffTrack, jenFile, jeffFile):
+        jenTrack['keep'] = True
+        jenTrack['strategy'] = 'G'
+        jeffTrack['keep'] = False
+        jeffTrack['strategy'] = 'G'
+        jeffTrack['winner'] = jenFile
 
 class PickWinners():
     def __init__(self):
