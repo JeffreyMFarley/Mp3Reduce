@@ -25,8 +25,21 @@ class GenerateYeimiDeleteScript():
                     fout.writelines('rm -f "'+path+'"\n')
 
             # manual deletes
-            for k in ["/Volumes/Music/Jennifer Music/The Cure/Boys Don't Cry/03 03 03 - 10.15 saturday night.mp3"
-                      ]:
+            for k in [
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-01 Somewhat Damaged.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-02 The Day the World Went Away.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-03 The Frail.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-04 The Wretched.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-05 We're in This Together.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-06 The Fragile.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-07 Just Like You Imagined.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-08 Even Deeper.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-09 Pilgrimage.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-10 No You Don't.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-11 La Mer.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-12 The Great Below.mp3",
+                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/2-02 Into the Void.mp3"
+                ]:
                 path = unicodedata.normalize('NFKC', k)
                 if '"' in path:
                     path = path.replace('"', '""')
