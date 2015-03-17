@@ -3,13 +3,15 @@ import sys
 import pyTagger
 import urllib
 import unicodedata
+import generate_normalization_maps as Normalize
 
 PATH_YEIMI = r'..\data\yeimi_library.txt'
 PATH_WESTEROS = r'..\data\westeros_library.txt'
 
 class AddYeimiLibraryIds():
-    def __init__(self, fileName=PATH_YEIMI):
+    def __init__(self, fileName=PATH_YEIMI, performQA=False):
         self.fileName = fileName
+        self.performQA = performQA
 
     def __str__(self):
         return "Adding IDs from Jen's iTunes Library"
@@ -18,11 +20,13 @@ class AddYeimiLibraryIds():
         if not os.path.exists(self.fileName):
             return
 
+        normalizer = Normalize.GenerateNormalizationMaps()
+
         with open(self.fileName, 'r', encoding='macintosh') as f:
             header = f.readline()
             for row in f:
                 cells = row.strip().split('\t')
-                t = {'title': unicodedata.normalize('NFKD', cells[0]), 
+                t = {'title': normalizer.normalize(cells[0]), 
                      'path': unicodedata.normalize('NFKD', cells[1]), 
                      'id': int(cells[2])}
 
@@ -39,9 +43,19 @@ class AddYeimiLibraryIds():
                     t['path'] = t['path'].replace('?', chr(61477))
 
                 if t['path'] in tracks:
-                    tracks[t['path']]['yeimi_id'] = t['id']
+                    track = tracks[t['path']]
+                    track['yeimi_id'] = t['id']
+
+                    if self.performQA and 'title' in track and track['title']:
+                        nt = normalizer.normalize(track['title'])
+                        if (nt != t['title']):
+                            print('  QA Issue', 
+                                  t['path'].encode(errors='ignore'), 
+                                  'title mismatch\t', nt.encode(errors='ignore'), 
+                                  '\t', t['title'].encode(errors='ignore'))
+
                 elif t['path'][-3:] == 'mp3':
-                    print('  ', t['path'].encode(errors='ignore'), 'not found')
+                    print('  ', t['path'].encode(errors='ignore'), 'not found', file=sys.stderr)
 
 class AddWesterosLibraryIds():
     def __init__(self, fileName=PATH_WESTEROS):
