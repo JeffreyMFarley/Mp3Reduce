@@ -25,21 +25,12 @@ class GenerateYeimiDeleteScript():
                     fout.writelines('rm -f "'+path+'"\n')
 
             # manual deletes
-            for k in [
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-01 Somewhat Damaged.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-02 The Day the World Went Away.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-03 The Frail.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-04 The Wretched.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-05 We're in This Together.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-06 The Fragile.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-07 Just Like You Imagined.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-08 Even Deeper.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-09 Pilgrimage.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-10 No You Don't.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-11 La Mer.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/1-12 The Great Below.mp3",
-                "/Volumes/Music/Jennifer Music/Nine Inch Nails/The Fragile/2-02 Into the Void.mp3"
-                ]:
+            for k in ["/Volumes/Music/Jennifer Music/Nine Inch Nails/Broken/04 Help Me I Am in Hell.mp3",
+                      "/Volumes/Music/Jennifer Music/Nine Inch Nails/Broken/05 Happiness in Slavery.mp3",
+                      "/Volumes/Music/Jennifer Music/Nine Inch Nails/Broken/2-01 Physical.mp3",
+                      "/Volumes/Music/Jennifer Music/Nine Inch Nails/Broken/2-02 Suck.mp3",
+                      "/Volumes/Music/Jennifer Music/Aphex Twin/selected ambient works volume 2/_-  -  - 1.mp3"
+                      ]:
                 path = unicodedata.normalize('NFKC', k)
                 if '"' in path:
                     path = path.replace('"', '""')
@@ -50,7 +41,7 @@ class GenerateYeimiDeleteScript():
         a0 = ('root' in x and x['root'] == 'Jen'
               and 'keep' in x and not x['keep']
               and 'strategy' in x)
-        a1 = a0 and x['strategy'] in ['A','D','F', 'H']
+        a1 = a0 and x['strategy'] in ['A','D','F','H']
         a2 = a0 and (x['strategy'] == 'C'
                      and 'keepJeff' in x and x['keepJeff'] > 0
                      and 'keepJen' in x and x['keepJen'] == 0)

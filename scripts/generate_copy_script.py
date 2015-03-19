@@ -28,7 +28,7 @@ class GenerateCopyScript():
     def predicate(self, x):
         a0 = ('keep' in x and not x['keep']
               and 'strategy' in x)
-        a1 = a0 and x['strategy'] in ['G']
+        a1 = a0 and x['strategy'] in ['G','H']
         return a1
 
 

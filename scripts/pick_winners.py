@@ -60,6 +60,9 @@ class TrackGroupForWinners():
         elif self.isStrategyB(track1):
             self.writeStrategy(track0, track1, 'B', keys[0])
 
+        elif self.isStrategyH(track0, track1, keys[0], keys[1]):
+            pass
+
         elif self.isStrategyC(track0):
             winner, loser = self.strategyCWinner(track0, track1)
             self.writeStrategy(winner, loser, 'C', keys[0] if winner == track0 else keys[1])
@@ -77,11 +80,6 @@ class TrackGroupForWinners():
 
         elif self.isStrategyG(track0, track1, keys[0], keys[1]):
             pass
-
-        elif self.isStrategyH(track0):
-            self.writeStrategy(track0, track1, 'H', keys[0])
-        elif self.isStrategyH(track1):
-            self.writeStrategy(track1, track0, 'H', keys[0])
 
         elif self.isStrategyE(track0):
             if 'Jen' in track0['root']:
@@ -139,7 +137,7 @@ class TrackGroupForWinners():
                                        'queen is dead', 'revolver-beatles',
                                        'sgt peppers lonely hearts',
                                        'transatlanticism',
-                                       'tidal', 'under the pink',
+                                       'tidal', 'under the pink', 'weezer',
                                        'we have the facts and were voting yes',
                                        'whatever and ever amen', 'white album',
                                        'who can you trust',
@@ -186,10 +184,17 @@ class TrackGroupForWinners():
         if e1 and track0['bitRate'] > track1['bitRate']:
             self.writeStrategyG(track1, track0, file1, file0)
             return True
-    
-    def isStrategyH(self, track):
-        return ('n_album' in track and track['n_album'] == 'achtung baby'
-                and 'westeros_idh' in track and track['westeros_idh'])
+
+    def isStrategyH(self, track0, track1, file0, file1):
+        r0 = ('n_album' in track0 and 'root' in track0 and 
+              track0['n_album'] in ['good news for people who love bad news'])
+        if r0 and track0['bitRate'] > track1['bitRate'] and track0['root'] == 'Jen':
+            self.writeStrategyH(track0, track1, file0, file1)
+            return True
+        if r0 and track1['bitRate'] > track0['bitRate'] and track1['root'] == 'Jen':
+            self.writeStrategyH(track1, track0, file1, file0)
+            return True
+        return False
 
     def strategyCWinner(self, a, b):
         if a['bitRate'] > b['bitRate']:
@@ -228,6 +233,13 @@ class TrackGroupForWinners():
         jeffTrack['keep'] = False
         jeffTrack['strategy'] = 'G'
         jeffTrack['winner'] = jenFile
+
+    def writeStrategyH(self, jenTrack, jeffTrack, jenFile, jeffFile):
+        jenTrack['keep'] = False
+        jenTrack['strategy'] = 'H'
+        jenTrack['winner'] = jeffFile
+        jeffTrack['keep'] = True
+        jeffTrack['strategy'] = 'H'
 
 class PickWinners():
     def __init__(self):

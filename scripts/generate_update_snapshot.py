@@ -28,6 +28,10 @@ class TrackGroupForUpdate():
             self.addUpdate(track0, track1, keys[1], snapshot)
         elif WU.predicate(track1):
             self.addUpdate(track1, track0, keys[0], snapshot)
+        elif self.predicate(track0):
+            self.addUpdate(track1, track0, keys[0], snapshot)
+        elif self.predicate(track1):
+            self.addUpdate(track0, track1, keys[1], snapshot)
 
     def addUpdate(self, a, b, k, snapshot):
         v = self.updater._findDelta(a, b)
@@ -37,6 +41,9 @@ class TrackGroupForUpdate():
 
         snapshot.update({k: v})
 
+    def predicate(self, x):
+        return ('strategy' in x and x['strategy'] in ['H'] and
+                'root' in x and x['root'] == 'Jen')
 
 class GenerateUpdateSnapshot():
     def __init__(self, outfile=PATH):
