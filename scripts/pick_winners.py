@@ -107,7 +107,9 @@ class TrackGroupForWinners():
         a0 = (track['root'] == 'Jen' and 'n_album' in track
               and track['n_album'] in ['broken social scene', 
                                        'de la soul is dead', 'fashion nugget', 
-                                       'formica blues', 'making mirrors',
+                                       'formica blues', 
+                                       'good news for people who love bad news',
+                                       'making mirrors',
                                        'mirror conspiracy', 'moon antarctica',
                                        'out of time', 'post',
                                        'pretty hate machine',

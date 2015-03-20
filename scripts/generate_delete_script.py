@@ -25,12 +25,7 @@ class GenerateYeimiDeleteScript():
                     fout.writelines('rm -f "'+path+'"\n')
 
             # manual deletes
-            for k in ["/Volumes/Music/Jennifer Music/Nine Inch Nails/Broken/04 Help Me I Am in Hell.mp3",
-                      "/Volumes/Music/Jennifer Music/Nine Inch Nails/Broken/05 Happiness in Slavery.mp3",
-                      "/Volumes/Music/Jennifer Music/Nine Inch Nails/Broken/2-01 Physical.mp3",
-                      "/Volumes/Music/Jennifer Music/Nine Inch Nails/Broken/2-02 Suck.mp3",
-                      "/Volumes/Music/Jennifer Music/Aphex Twin/selected ambient works volume 2/_-  -  - 1.mp3"
-                      ]:
+            for k in []:
                 path = unicodedata.normalize('NFKC', k)
                 if '"' in path:
                     path = path.replace('"', '""')
