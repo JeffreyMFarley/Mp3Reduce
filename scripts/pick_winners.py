@@ -113,7 +113,9 @@ class TrackGroupForWinners():
                                        'mirror conspiracy', 'moon antarctica',
                                        'out of time', 'post',
                                        'pretty hate machine',
-                                       'shaking the tree', 'twice upon a time the singles',
+                                       'selected ambient works volume 2',
+                                       'shaking the tree', 
+                                       'twice upon a time the singles',
                                        'uforb', 'us', 
                                        'very best of bananarama'
                                        ])
@@ -124,7 +126,8 @@ class TrackGroupForWinners():
               and track['subtitle'] in ['2007-03-18', '2007-10-14', '2009-07-19'])
         b1 = (track['root'] == 'Jeff' and 'n_album' in track
               and track['n_album'] in ['aenima', 'amnesiac', 'amplified',
-                                       'becoming x', 'bunkka', 'downward spiral',
+                                       'becoming x', 'bunkka', 'chutes too narrow', 
+                                       'downward spiral',
                                        'eyelid movies', 'gimme fiction',
                                        'gorillaz',
                                        'greatest hits-simon garfunkel',
